@@ -332,20 +332,27 @@
   display: none;
 }
 
-html[data-yt-intro="play"] body {
+html[data-yt-intro="play"] body,
+html[data-yt-intro="skipping"] body {
   overflow: hidden;
 }
 
-html[data-yt-intro="play"] .v2-intro {
+html[data-yt-intro="play"] .v2-intro,
+html[data-yt-intro="skipping"] .v2-intro {
   position: fixed;
   inset: 0;
   z-index: 200;
   display: grid;
   place-items: center;
-  animation: v2-intro-out 420ms var(--v2-ease) 1030ms both;
+  animation: v2-intro-out 520ms var(--v2-ease) 2480ms both;
 }
 
-html[data-yt-intro="play"] .v2-intro-veil {
+html[data-yt-intro="skipping"] .v2-intro {
+  animation: v2-intro-out 240ms var(--v2-ease) both;
+}
+
+html[data-yt-intro="play"] .v2-intro-veil,
+html[data-yt-intro="skipping"] .v2-intro-veil {
   position: absolute;
   inset: -10%;
   background:
@@ -353,40 +360,46 @@ html[data-yt-intro="play"] .v2-intro-veil {
   filter: blur(28px);
 }
 
-html[data-yt-intro="play"] .v2-intro-logo {
+html[data-yt-intro="play"] .v2-intro-logo,
+html[data-yt-intro="skipping"] .v2-intro-logo {
   position: relative;
   width: min(320px, 54vw);
   height: auto;
   object-fit: contain;
-  animation: v2-intro-logo 1450ms var(--v2-ease) both;
+  animation: v2-intro-logo 3000ms var(--v2-ease) both;
 }
 
 @keyframes v2-intro-logo {
   0% {
     opacity: 0;
     filter: blur(18px);
-    transform: scale(1.04);
+    transform: scale(1.035);
   }
-  10% {
-    opacity: 0.2;
-    filter: blur(14px);
+  6.7% {
+    opacity: 0;
+    filter: blur(18px);
   }
-  31% {
+  14% {
+    opacity: 0.45;
+    filter: blur(10px);
+  }
+  23.3% {
     opacity: 1;
     filter: blur(0);
     transform: scale(1);
   }
-  55% {
+  73.3% {
     opacity: 1;
     filter: blur(0);
+    transform: scale(1);
   }
-  74% {
-    opacity: 0.55;
-    filter: blur(4px);
+  86% {
+    opacity: 0.6;
+    filter: blur(3px);
   }
   100% {
     opacity: 0;
-    filter: blur(10px);
+    filter: blur(9px);
     transform: scale(0.995);
   }
 }
@@ -2124,4 +2137,97 @@ html[data-yt-intro="play"] .v2-intro-logo {
   .v2 * {
     scroll-behavior: auto;
   }
+}
+
+/* ------------------------------- showcases -------------------------------- */
+
+/*
+ * Showcase frames hold generated product renders. `contain` on the same dark
+ * ground means an asset of any aspect sits in the frame without cropping the
+ * interface it is showing.
+ */
+.v2-showcase {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--yt-border);
+  border-radius: var(--v2-radius);
+  background:
+    radial-gradient(120% 100% at 50% 0%, var(--yt-charcoal) 0%, var(--yt-black-2) 70%);
+}
+
+.v2-showcase-image {
+  object-fit: contain;
+  object-position: center;
+}
+
+.v2-showcase-band-inner {
+  display: grid;
+  gap: 20px;
+  justify-items: center;
+}
+
+.v2-showcase-band .v2-showcase {
+  border-radius: 20px;
+}
+
+.v2-showcase-caption {
+  color: var(--yt-gray-2);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* --------------------------- ambient atmosphere --------------------------- */
+
+/*
+ * Depth without a second theme: the page keeps one background colour and these
+ * layers only lift it a few percent. All decorative, all behind content.
+ */
+.v2-hero,
+.v2-statement,
+.v2-scene-section,
+.v2-manifesto {
+  position: relative;
+  isolation: isolate;
+}
+
+.v2-hero::before,
+.v2-scene-section::before,
+.v2-manifesto::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.v2-hero::before {
+  background:
+    radial-gradient(70% 55% at 72% 18%, rgba(47, 125, 246, 0.06) 0%, transparent 62%),
+    radial-gradient(90% 70% at 12% 4%, rgba(255, 255, 255, 0.035) 0%, transparent 58%);
+}
+
+.v2-scene-section::before {
+  background: radial-gradient(
+    60% 40% at 50% 0%,
+    rgba(255, 255, 255, 0.028) 0%,
+    transparent 70%
+  );
+}
+
+.v2-manifesto::before {
+  background:
+    radial-gradient(50% 60% at 50% 50%, rgba(47, 125, 246, 0.05) 0%, transparent 68%);
+}
+
+.v2-statement::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 120px 100%;
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 40%, transparent 92%);
 }

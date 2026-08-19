@@ -8,6 +8,7 @@ import {
   OsConsole,
   QualifierVisual,
 } from "@/components/v2/scenes";
+import { SHOWCASE, Showcase } from "@/components/v2/showcase";
 import { StickyScene } from "@/components/v2/sticky-scene";
 import { V2Button, V2Section } from "@/components/v2/ui";
 import { automationOsPricing, money } from "@/content/pricing";
@@ -51,7 +52,13 @@ export default function V2AutomationOs() {
             </div>
           </div>
           <div className="v2-os-hero-visual" data-enter="4">
-            <OsConsole />
+            <Showcase
+              alt="Automation OS: five connected modules — Lead, AI Qualification, CRM, Follow-Up, and Dashboard — presented as one unified interface."
+              fallback={<OsConsole />}
+              name={SHOWCASE.automationOs}
+              priority
+              ratio="16 / 10"
+            />
           </div>
         </div>
       </V2Section>

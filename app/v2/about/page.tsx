@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ManualProcessVisual, ManagedVisual } from "@/components/v2/scenes";
+import { SHOWCASE, Showcase } from "@/components/v2/showcase";
 import { V2Button, V2Section } from "@/components/v2/ui";
 import { principles } from "@/content/v2";
 
@@ -53,7 +54,12 @@ export default function V2About() {
             </p>
           </div>
           <div className="v2-split-visual" data-reveal>
-            <ManualProcessVisual />
+            <Showcase
+              alt="A dark enterprise systems composition suggesting process clarity and automation structure."
+              fallback={<ManualProcessVisual />}
+              name={SHOWCASE.aboutPhilosophy}
+              ratio="4 / 3"
+            />
           </div>
         </div>
       </V2Section>

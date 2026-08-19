@@ -19,6 +19,7 @@ import {
   ReportingVisual,
   WebsiteVisual,
 } from "@/components/v2/scenes";
+import { SHOWCASE, ShowcaseBand, type ShowcaseName } from "@/components/v2/showcase";
 import { StickyScene } from "@/components/v2/sticky-scene";
 import { V2Button, V2Section } from "@/components/v2/ui";
 import { money } from "@/content/pricing";
@@ -48,6 +49,13 @@ const VISUALS: Record<string, ReactNode> = {
   "customer-employee-portal": <PortalVisual />,
   "custom-website": <WebsiteVisual section="Custom Website" />,
   "advanced-website": <WebsiteVisual section="Advanced Website" />,
+};
+
+const CHAPTER_SHOWCASE: Record<string, ShowcaseName> = {
+  "sales-leads": SHOWCASE.salesAutomation,
+  operations: SHOWCASE.quotesOperations,
+  systems: SHOWCASE.crmSystems,
+  websites: SHOWCASE.websites,
 };
 
 const CHAPTER_LEDE: Record<string, string> = {
@@ -107,27 +115,29 @@ export default function V2Services() {
       </V2Section>
 
       {serviceCategories.map((category, index) => (
-        <V2Section
-          className="v2-scene-section"
-          id={category.id}
-          key={category.id}
-          width="wide"
-        >
-          <StickyScene
-            align={index % 2 === 1 ? "visual-left" : "visual-right"}
-            body={CHAPTER_LEDE[category.id] ?? category.intro}
+        <div key={category.id}>
+          <ShowcaseBand
+            alt={`${category.title}: a connected YinTech system shown as one workspace.`}
             eyebrow={`Chapter ${String(index + 1).padStart(2, "0")}`}
-            id={`${category.id}-scene`}
-            steps={category.services.map((service) => ({
-              id: service.id,
-              label: service.name,
-              body: service.description,
-              meta: <ServicePricing service={service} />,
-              visual: VISUALS[service.id] ?? <CrmVisual />,
-            }))}
-            title={category.title}
+            name={CHAPTER_SHOWCASE[category.id]}
           />
-        </V2Section>
+          <V2Section className="v2-scene-section" id={category.id} width="wide">
+            <StickyScene
+              align={index % 2 === 1 ? "visual-left" : "visual-right"}
+              body={CHAPTER_LEDE[category.id] ?? category.intro}
+              eyebrow={`Chapter ${String(index + 1).padStart(2, "0")}`}
+              id={`${category.id}-scene`}
+              steps={category.services.map((service) => ({
+                id: service.id,
+                label: service.name,
+                body: service.description,
+                meta: <ServicePricing service={service} />,
+                visual: VISUALS[service.id] ?? <CrmVisual />,
+              }))}
+              title={category.title}
+            />
+          </V2Section>
+        </div>
       ))}
 
       <V2Section className="v2-final">

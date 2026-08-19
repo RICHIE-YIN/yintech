@@ -24,7 +24,7 @@ if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){d.dataset.ytIn
 if(sessionStorage.getItem(k)){d.dataset.ytIntro="done";return;}
 sessionStorage.setItem(k,"1");
 d.dataset.ytIntro="play";
-d.style.setProperty("--v2-enter-delay","1.35s");
+d.style.setProperty("--v2-enter-delay","2.6s");
 }catch(e){}})();
 `;
 

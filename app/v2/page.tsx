@@ -8,6 +8,7 @@ import {
   OsConsole,
   QualifierVisual,
 } from "@/components/v2/scenes";
+import { SHOWCASE, Showcase } from "@/components/v2/showcase";
 import { StickyScene } from "@/components/v2/sticky-scene";
 import { V2Button, V2Section } from "@/components/v2/ui";
 import { automationOsPricing, money } from "@/content/pricing";
@@ -44,7 +45,13 @@ export default function V2Home() {
             </div>
           </div>
           <div className="v2-hero-visual" data-enter="4">
-            <HeroConsole />
+            <Showcase
+              alt="The YinTech Automation OS interface: lead intake, qualification score, CRM record, follow-up schedule, and dashboard visibility in one system."
+              fallback={<HeroConsole />}
+              name={SHOWCASE.hero}
+              priority
+              ratio="16 / 11"
+            />
           </div>
         </div>
       </V2Section>
@@ -93,7 +100,13 @@ export default function V2Home() {
               id: "connected",
               label: "Connected Operation",
               body: "Capture, qualification, records, follow-up, and reporting run as one system. Your team works the exceptions instead of the admin.",
-              visual: <ConnectedOperationVisual />,
+              visual: (
+                <Showcase
+                  alt="A manual workflow of website lead, manual review, spreadsheet, and manual follow-up, redrawn as a connected system with lead intake, qualification, CRM, follow-up, and dashboard."
+                  fallback={<ConnectedOperationVisual />}
+                  name={SHOWCASE.systemTransformation}
+                />
+              ),
             },
           ]}
           title="From workflow problem to working system."
@@ -162,7 +175,13 @@ export default function V2Home() {
         </ol>
 
         <div className="v2-os-console" data-reveal>
-          <OsConsole />
+          <Showcase
+            alt="Automation OS: five connected modules — Lead, AI Qualification, CRM, Follow-Up, and Dashboard — running as one interface."
+            fallback={<OsConsole />}
+            name={SHOWCASE.automationOs}
+            ratio="16 / 9"
+            sizes="(max-width: 900px) 100vw, 92vw"
+          />
         </div>
 
         {/* Pricing reveal — editorial numbers, not cards */}

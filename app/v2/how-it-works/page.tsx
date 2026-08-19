@@ -5,6 +5,7 @@ import {
   ManagedVisual,
   MappedProcessVisual,
 } from "@/components/v2/scenes";
+import { SHOWCASE, ShowcaseBand } from "@/components/v2/showcase";
 import { StickyScene } from "@/components/v2/sticky-scene";
 import { V2Button, V2Section } from "@/components/v2/ui";
 import { howItWorksSteps } from "@/content/v2";
@@ -32,6 +33,13 @@ export default function V2HowItWorks() {
           <V2Button href="/v2/contact">Start with the audit</V2Button>
         </div>
       </V2Section>
+
+      <ShowcaseBand
+        alt="A system map running from automation audit through system map, proposal, build, test, deploy, and manage."
+        caption="The delivery arc, end to end."
+        eyebrow="System Map"
+        name={SHOWCASE.howItWorksMap}
+      />
 
       <V2Section className="v2-scene-section" width="wide">
         <StickyScene
