@@ -52,9 +52,8 @@ export function IntroOverlay() {
         alt=""
         className="v2-intro-logo"
         height={288}
-        priority
         src="/images/yintech-logo.png"
-        unoptimized
+        style={{ height: "auto" }}
         width={432}
       />
     </div>

@@ -40,7 +40,7 @@ export function V2Nav() {
               height={57}
               priority
               src="/images/yintech-logo.png"
-              unoptimized
+              style={{ height: "auto" }}
               width={86}
             />
           </span>

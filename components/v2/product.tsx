@@ -225,8 +225,8 @@ export function RawBlock({ lines, title }: { lines: string[]; title?: string }) 
   return (
     <div className="v2-raw">
       {title ? <span className="v2-raw-title">{title}</span> : null}
-      {lines.map((line) => (
-        <span className="v2-raw-line" key={line}>
+      {lines.map((line, index) => (
+        <span className="v2-raw-line" key={`${line}-${index}`}>
           {line}
         </span>
       ))}
@@ -248,7 +248,7 @@ export function Chart({
         {bars.map((bar, index) => (
           <span
             data-lead={index === bars.length - 1 || undefined}
-            key={bar.label}
+            key={`${bar.label}-${index}`}
             style={{ height: `${bar.value}%` }}
             title={`${bar.label}: ${bar.value}`}
           >
