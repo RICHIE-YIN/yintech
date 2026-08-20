@@ -170,6 +170,17 @@ export function FlightScene({
         minHeight: `calc(100svh + ${(steps.length - 1) * perStageVh}vh)`,
       }}
     >
+      {/*
+        * One sentinel per stage at its scroll offset. Scroll snapping is the
+        * browser's job — a flick lands on the next stage and it animates
+        * there natively, without hijacking the wheel.
+        */}
+      <div aria-hidden="true" className="v3-flight-snaps">
+        {steps.map((step, index) => (
+          <span key={step.id} style={{ top: `${index * perStageVh}vh` }} />
+        ))}
+      </div>
+
       <div className="v3-flight-pin">
         <div className="v3-flight-inner">
           <div className="v3-flight-head">

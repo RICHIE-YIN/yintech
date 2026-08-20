@@ -6,7 +6,7 @@ import {
   MappedProcessVisual,
 } from "@/components/v3/scenes";
 import { SHOWCASE, ShowcaseBand } from "@/components/v3/showcase";
-import { ScrollScene } from "@/components/v3/scroll-scene";
+import { ElevateList } from "@/components/v3/elevate-list";
 import { FlightScene } from "@/components/v3/flight-scene";
 import { V3Button, V3PageHero, V3Section } from "@/components/v3/ui";
 import { howItWorksSteps } from "@/content/v3";
@@ -82,7 +82,7 @@ export default function V3HowItWorks() {
           <p className="v3-eyebrow">The Steps</p>
           <h2 className="v3-scene-title">What actually happens, in order.</h2>
         </div>
-        <ScrollScene as="div" className="v3-steps-scene" mode="enter">
+        <ElevateList className="v3-steps-scene">
         <ol className="v3-steps">
           {howItWorksSteps.map((step) => (
             <li data-reveal key={step.number}>
@@ -94,7 +94,7 @@ export default function V3HowItWorks() {
             </li>
           ))}
         </ol>
-        </ScrollScene>
+        </ElevateList>
       </V3Section>
 
       <V3Section className="v3-final">

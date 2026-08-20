@@ -2607,7 +2607,7 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
  * figures reach the middle of the screen, rather than peaking after they pass.
  */
 .v3-pricing-scene {
-  --glow: clamp(0, calc(var(--scene-p, 0) * 1.9), 1);
+  --glow: clamp(0, calc(var(--scene-p, 0) * 1.75), 1);
   position: relative;
   display: block;
 }
@@ -2615,14 +2615,14 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
 .v3-pricing-scene::before {
   content: "";
   position: absolute;
-  inset: -14% 0;
+  inset: -22% 0;
   z-index: 0;
   pointer-events: none;
   background: radial-gradient(
     58% 62% at 50% 50%,
-    rgba(47, 125, 246, calc(0.3 * var(--glow))) 0%,
-    rgba(47, 125, 246, calc(0.12 * var(--glow))) 42%,
-    transparent 72%
+    rgba(47, 125, 246, calc(0.17 * var(--glow))) 0%,
+    rgba(47, 125, 246, calc(0.08 * var(--glow))) 46%,
+    transparent 78%
   );
   filter: blur(26px);
 }
@@ -2636,33 +2636,33 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
   color: color-mix(
     in srgb,
     var(--yt-white),
-    var(--yt-blue-hover) calc(62% * var(--glow))
+    var(--yt-blue-hover) calc(36% * var(--glow))
   );
   text-shadow:
-    0 0 calc(10px + 26px * var(--glow)) rgba(74, 145, 255, calc(0.85 * var(--glow))),
-    0 0 calc(3px + 8px * var(--glow)) rgba(160, 205, 255, calc(0.6 * var(--glow)));
+    0 0 calc(12px + 32px * var(--glow)) rgba(74, 145, 255, calc(0.42 * var(--glow))),
+    0 0 calc(4px + 10px * var(--glow)) rgba(160, 205, 255, calc(0.26 * var(--glow)));
 }
 
 .v3-pricing-scene .v3-pricing-figure[data-lead="true"] strong {
   color: color-mix(
     in srgb,
     var(--yt-blue-hover),
-    #cfe4ff calc(45% * var(--glow))
+    #cfe4ff calc(28% * var(--glow))
   );
   text-shadow:
-    0 0 calc(14px + 38px * var(--glow)) rgba(74, 145, 255, calc(1 * var(--glow))),
-    0 0 calc(4px + 12px * var(--glow)) rgba(190, 220, 255, calc(0.75 * var(--glow)));
+    0 0 calc(16px + 44px * var(--glow)) rgba(74, 145, 255, calc(0.55 * var(--glow))),
+    0 0 calc(5px + 14px * var(--glow)) rgba(190, 220, 255, calc(0.32 * var(--glow)));
 }
 
 .v3-pricing-scene .v3-pricing-figure {
-  border-top-color: rgba(74, 145, 255, calc(0.1 + 0.75 * var(--glow)));
+  border-top-color: rgba(74, 145, 255, calc(0.1 + 0.42 * var(--glow)));
 }
 
 .v3-pricing-scene .v3-pricing-figure span {
   color: color-mix(
     in srgb,
     var(--yt-white),
-    var(--yt-blue-hover) calc(35% * var(--glow))
+    var(--yt-blue-hover) calc(20% * var(--glow))
   );
 }
 
@@ -2692,12 +2692,43 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
   padding-left: clamp(18px, 3vw, 40px);
 }
 
-.v3-steps-scene .v3-step-number {
-  transition: color 500ms var(--v3-ease), transform 500ms var(--v3-ease);
+/*
+ * Lift is applied to the item's children, not the item: the reveal system
+ * owns transform on the <li> at higher specificity.
+ */
+.v3-steps-scene .v3-steps li .v3-step-number,
+.v3-steps-scene .v3-steps li .v3-step-copy {
+  transform: translateY(calc((1 - var(--near, 0)) * 14px));
+  transition: transform 240ms var(--v3-ease);
 }
 
-.v3-steps-scene .v3-steps li[data-revealed] .v3-step-number {
-  color: var(--yt-gray-1);
+.v3-steps-scene .v3-steps li .v3-step-number {
+  color: color-mix(
+    in srgb,
+    var(--yt-surface-2),
+    var(--v3-accent) calc(70% * var(--near, 0))
+  );
+  transition: transform 240ms var(--v3-ease), color 320ms var(--v3-ease);
+}
+
+.v3-steps-scene .v3-steps li .v3-step-copy h3 {
+  color: color-mix(
+    in srgb,
+    var(--yt-gray-1),
+    var(--yt-white) calc(100% * var(--near, 0))
+  );
+}
+
+/* A faint plate under whichever step is passing. */
+.v3-steps-scene .v3-steps li {
+  position: relative;
+  border-radius: 14px;
+  background: linear-gradient(
+    90deg,
+    rgba(47, 125, 246, calc(0.05 * var(--near, 0))) 0%,
+    transparent 62%
+  );
+  transition: background 320ms var(--v3-ease);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2725,6 +2756,60 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
 
 .v3-flight {
   position: relative;
+}
+
+/*
+ * Snapping has to live on the scroll container, which is the document — but
+ * `:has(.v3)` keeps it to pages that actually render this concept. Proximity
+ * rather than mandatory so nobody is trapped scrolling past the section;
+ * `scroll-snap-stop: always` on the sentinels still makes one flick advance
+ * exactly one stage.
+ */
+html:has(.v3) {
+  scroll-snap-type: y proximity;
+}
+
+.v3-flight-snaps {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.v3-scene-snaps {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.v3-scene-snaps span {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.v3-scene-snaps span[data-at="start"] {
+  top: 0;
+}
+
+/* End of the pinned run: one flick carries the swell through and out. */
+.v3-scene-snaps span[data-at="end"] {
+  top: calc(100% - 100svh);
+}
+
+.v3-os-headline-scene {
+  position: relative;
+}
+
+.v3-flight-snaps span {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .v3-flight-pin {
@@ -2853,6 +2938,20 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
 }
 
 @media (max-width: 900px) {
+  /*
+   * No camera on narrow screens, so the sentinels no longer line up with
+   * anything — snapping would just stop the page at arbitrary points.
+   */
+  html:has(.v3) {
+    scroll-snap-type: none;
+  }
+
+  .v3-flight-snaps span,
+  .v3-scene-snaps span {
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+  }
+
   .v3-flight {
     /* Stage travel is set inline; on narrow screens the copy needs the width. */
     min-height: 0 !important;

@@ -10,6 +10,7 @@ import {
   QualifierVisual,
 } from "@/components/v3/scenes";
 import { SHOWCASE, Showcase, resolveShowcase } from "@/components/v3/showcase";
+import { ElevateList } from "@/components/v3/elevate-list";
 import { ScrollScene } from "@/components/v3/scroll-scene";
 import { FlightScene } from "@/components/v3/flight-scene";
 import { V3Button, V3Section } from "@/components/v3/ui";
@@ -214,7 +215,7 @@ export default function V3Home() {
 
       {/* Scene 5 — Automation OS */}
       <V3Section className="v3-os" width="wide">
-        <ScrollScene className="v3-os-headline-scene" mode="pin">
+        <ScrollScene className="v3-os-headline-scene" mode="pin" snap>
           <div className="v3-os-headline-pin">
             <div className="v3-os-head">
               <p className="v3-eyebrow">YinTech Automation OS</p>
@@ -287,7 +288,7 @@ export default function V3Home() {
           <p className="v3-eyebrow">How We Work</p>
           <h2 className="v3-scene-title">Four steps, no mystery.</h2>
         </div>
-        <ScrollScene as="div" className="v3-steps-scene" mode="enter">
+        <ElevateList className="v3-steps-scene">
         <ol className="v3-steps">
           {processSteps.map((step) => (
             <li data-reveal key={step.number}>
@@ -299,7 +300,7 @@ export default function V3Home() {
             </li>
           ))}
         </ol>
-        </ScrollScene>
+        </ElevateList>
       </V3Section>
 
       {/* Scene 7 — final CTA */}
