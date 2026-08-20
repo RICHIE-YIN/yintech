@@ -26,13 +26,18 @@ export default function V2Home() {
     <>
       {/* Scene 1 — hero */}
       <V2Section className="v2-hero" width="wide">
+        <div aria-hidden="true" className="v2-hero-atmosphere">
+          <span className="v2-hero-motif" />
+          <span className="v2-hero-blueprint" />
+        </div>
         <div className="v2-hero-grid">
           <div className="v2-hero-copy">
             <p className="v2-eyebrow" data-enter="1">
               {heroCopy.eyebrow}
             </p>
             <h1 className="v2-hero-title" data-enter="2">
-              {heroCopy.title}
+              Build a <span className="v2-accent-word">smarter</span> way to run
+              your business.
             </h1>
             <p className="v2-hero-body" data-enter="3">
               {heroCopy.body}
@@ -51,6 +56,19 @@ export default function V2Home() {
               name={SHOWCASE.hero}
               priority
             />
+            <div aria-hidden="true" className="v2-hero-card" data-pos="lead">
+              <span className="v2-hero-card-label">Lead flow</span>
+              <strong className="v2-hero-card-value">128</strong>
+              <span className="v2-hero-card-meta">New leads this week</span>
+            </div>
+            <div aria-hidden="true" className="v2-hero-card" data-pos="status">
+              <span className="v2-hero-card-label">Automation status</span>
+              <ul className="v2-hero-card-list">
+                <li>Lead qualification<span>Active</span></li>
+                <li>Follow-up sequences<span>Active</span></li>
+                <li>Quote generation<span>Active</span></li>
+              </ul>
+            </div>
           </div>
         </div>
       </V2Section>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 180" fill="currentColor" role="presentation">
+  <!--
+    Ambient structure derived from the YinTech mark: three slanted bars on a
+    rising diagonal. Used as a large, low-opacity background motif — the mark
+    itself stays the logo file in /public/images.
+  -->
+  <path d="M2 52 L74 10 L74 44 L2 86 Z" opacity="0.9" />
+  <path d="M2 98 L112 44 L112 78 L2 132 Z" opacity="0.65" />
+  <path d="M40 146 L112 104 L112 138 L40 180 Z" opacity="0.45" />
+</svg>
