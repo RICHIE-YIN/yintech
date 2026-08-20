@@ -2470,6 +2470,15 @@ html[data-yt-intro="skipping"] .v2-intro-logo {
 }
 
 @media (max-width: 900px) {
+  /*
+   * Narrow viewports crop horizontally. Anchoring left keeps the dark
+   * concrete behind the copy instead of the lit window wall, which is both
+   * calmer and far more contrast headroom.
+   */
+  .v2-page-backdrop-image {
+    object-position: 30% center;
+  }
+
   .v2-page-backdrop-scrim {
     background: linear-gradient(
       180deg,
