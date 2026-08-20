@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import Image from "next/image";
+import { SnapRail } from "@/components/v3/snap-rail";
 import type { ReactNode } from "react";
 import { readImageSize } from "@/lib/image-size";
 import { cn } from "@/lib/utils";
@@ -113,6 +114,9 @@ export function ShowcaseBand({
 
   return (
     <section className="v3-section v3-showcase-band">
+      {/* Bands render their own section rather than going through V3Section,
+          so they need snap coverage of their own. */}
+      <SnapRail />
       <div className="v3-container" data-width="wide">
         <div className="v3-showcase-band-inner" data-reveal>
           {eyebrow ? <p className="v3-eyebrow">{eyebrow}</p> : null}

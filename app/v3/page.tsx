@@ -256,7 +256,7 @@ export default function V3Home() {
         </div>
 
         {/* Pricing reveal — editorial numbers, not cards */}
-        <ScrollScene className="v3-pricing-scene v3-snap-section" mode="enter">
+        <ScrollScene className="v3-pricing-scene" mode="enter">
         <div className="v3-pricing" data-reveal>
           <div className="v3-pricing-figure">
             <strong>{money(automationOsPricing.standaloneSetup)}</strong>

@@ -952,6 +952,8 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
 /* --------------------------------- footer -------------------------------- */
 
 .v3-footer {
+  /* Positioned so its snap rail measures against the footer, not the page. */
+  position: relative;
   border-top: 1px solid var(--yt-border);
   padding-block: clamp(48px, 6vw, 80px);
 }
@@ -2837,16 +2839,42 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
  * exactly one stage.
  */
 html:has(.v3) {
-  scroll-snap-type: y proximity;
+  /*
+   * Mandatory, not proximity. Proximity only snaps when a gesture happens to
+   * end near a point, which on a trackpad is almost never — the section snaps
+   * were there but could not be felt. Every section carries a rail of points
+   * about a screen apart, so mandatory never strands content.
+   */
+  scroll-snap-type: y mandatory;
 }
 
 /*
- * Section-level snaps settle the page on each major moment. `normal` rather
- * than `always`, so a long fling can still cross several sections — only the
- * flight stages force a stop. scroll-margin clears the sticky header.
+ * The rail carries the snap points; the section itself is not a snap area, so
+ * a tall section cannot pull the page back to its top.
  */
-.v3-snap-section {
+.v3-snap-rail {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.v3-snap-rail span[data-edge="end"] {
+  top: auto;
+  bottom: 0;
+  scroll-snap-align: end;
+  scroll-margin-top: 0;
+}
+
+.v3-snap-rail span {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
   scroll-snap-align: start;
+  /*
+   * `normal`, so a fast fling can still cross several screens — it just lands
+   * aligned. Only the flight stages force a stop at every single point.
+   */
   scroll-snap-stop: normal;
   scroll-margin-top: 64px;
 }
