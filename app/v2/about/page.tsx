@@ -58,7 +58,7 @@ export default function V2About() {
               alt="A dark enterprise systems composition suggesting process clarity and automation structure."
               fallback={<ManualProcessVisual />}
               name={SHOWCASE.aboutPhilosophy}
-              ratio="4 / 3"
+              ratio="3 / 2"
             />
           </div>
         </div>

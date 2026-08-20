@@ -50,7 +50,7 @@ export default function V2Home() {
               fallback={<HeroConsole />}
               name={SHOWCASE.hero}
               priority
-              ratio="16 / 11"
+              ratio="3 / 2"
             />
           </div>
         </div>
@@ -179,7 +179,7 @@ export default function V2Home() {
             alt="Automation OS: five connected modules — Lead, AI Qualification, CRM, Follow-Up, and Dashboard — running as one interface."
             fallback={<OsConsole />}
             name={SHOWCASE.automationOs}
-            ratio="16 / 9"
+            ratio="3 / 2"
             sizes="(max-width: 900px) 100vw, 92vw"
           />
         </div>

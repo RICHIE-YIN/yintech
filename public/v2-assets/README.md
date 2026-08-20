@@ -6,7 +6,16 @@ change needed — `components/v2/showcase.tsx` checks for these files at build
 time.
 
 `.webp` is preferred; `.png` and `.jpg` also work. Extension priority is
-webp → png → jpg.
+webp → png → jpg, so adding `name.webp` later takes precedence over an
+existing `name.png` and the PNG can then be deleted.
+
+The check runs at build time, not per request. In `npm run dev` an added or
+removed file is picked up on the next rebuild — touch the page file or
+restart the dev server. A deploy always rebuilds, so nothing extra is needed
+there.
+
+Source files can stay PNG: Next's image optimizer converts and resizes on
+delivery. The 1536x1024 PNGs in this directory are served as ~86KB WebP.
 
 | File name (without extension)          | Where it appears                                      | Fallback while missing        |
 | -------------------------------------- | ----------------------------------------------------- | ----------------------------- |
@@ -31,8 +40,9 @@ No cartoon style, no holograms, no cyberpunk, no neon, no purple, no robots,
 no readable gibberish text walls.
 
 Frames use `object-fit: contain` on a dark ground, so any aspect ratio sits
-cleanly without cropping the interface. Roughly 16:10 suits the hero and
-chapter anchors; 16:9 suits the full-width bands.
+cleanly without cropping the interface. The current assets are all 3:2
+(1536x1024) and the frames are set to match; a different ratio will letterbox
+against the same dark ground rather than crop.
 
 ## Generation prompts
 

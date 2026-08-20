@@ -57,7 +57,7 @@ export default function V2AutomationOs() {
               fallback={<OsConsole />}
               name={SHOWCASE.automationOs}
               priority
-              ratio="16 / 10"
+              ratio="3 / 2"
             />
           </div>
         </div>

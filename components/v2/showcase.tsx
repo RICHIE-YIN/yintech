@@ -52,7 +52,7 @@ export function Showcase({
   fallback = null,
   name,
   priority = false,
-  ratio = "16 / 10",
+  ratio = "3 / 2",
   sizes = "(max-width: 900px) 100vw, 62vw",
 }: {
   alt: string;
@@ -95,7 +95,7 @@ export function ShowcaseBand({
   caption,
   eyebrow,
   name,
-  ratio = "16 / 9",
+  ratio = "3 / 2",
 }: {
   alt: string;
   caption?: string;
