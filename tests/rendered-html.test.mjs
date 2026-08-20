@@ -516,13 +516,13 @@ test("V2 follows the cinematic blueprint", async () => {
 });
 
 test("V3 is the V2 design plus scroll-driven scene mechanics", async () => {
-  const [v3Layout, v3Home, v3HowItWorks, scene, sticky, css, showcase] =
+  const [v3Layout, v3Home, v3HowItWorks, scene, flight, css, showcase] =
     await Promise.all([
       readFile(new URL("app/v3/layout.tsx", root), "utf8"),
       readFile(new URL("app/v3/page.tsx", root), "utf8"),
       readFile(new URL("app/v3/how-it-works/page.tsx", root), "utf8"),
       readFile(new URL("components/v3/scroll-scene.tsx", root), "utf8"),
-      readFile(new URL("components/v3/sticky-scene.tsx", root), "utf8"),
+      readFile(new URL("components/v3/flight-scene.tsx", root), "utf8"),
       readFile(new URL("app/v3/v3.css", root), "utf8"),
       readFile(new URL("components/v3/showcase.tsx", root), "utf8"),
     ]);
@@ -543,17 +543,22 @@ test("V3 is the V2 design plus scroll-driven scene mechanics", async () => {
   assert.match(scene, /--scene-peak/);
   assert.match(scene, /prefers-reduced-motion/);
 
-  // Stages recede once the camera has passed them.
-  assert.match(sticky, /data-passed=/);
-  assert.match(css, /\.v3-scene-frame\[data-passed\]/);
+  // Stages are driven by a continuous camera, not a state crossfade.
+  assert.match(flight, /const camera = progress \* \(steps\.length - 1\)/);
+  assert.match(flight, /scale = 1 \/ \(1 \+ d \* DEPTH\)/);
+  assert.match(flight, /scale = 1 \+ -d \* 0\.9/);
+  assert.match(css, /\.v3-flight-cell/);
 
   // The Automation OS headline swells while pinned, then settles.
   assert.match(v3Home, /v3-os-headline-scene/);
-  assert.match(css, /scale\(calc\(1 \+ 0\.62 \* var\(--scene-peak, 0\)\)\)/);
+  assert.match(css, /scale\(calc\(1 \+ [0-9.]+ \* var\(--scene-peak, 0\)\)\)/);
 
   // Console and pricing share a scene so one reacts to the other arriving.
   assert.match(v3Home, /v3-os-stack/);
   assert.match(css, /\.v3-os-stack \.v3-os-console/);
+
+  // Pricing glows via text-shadow, which no other system writes.
+  assert.match(css, /\.v3-os-stack \.v3-pricing-figure strong \{[^}]*text-shadow/s);
 
   // Both step lists get the scroll-drawn spine.
   assert.match(v3Home, /v3-steps-scene/);

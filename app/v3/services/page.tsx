@@ -20,7 +20,7 @@ import {
   WebsiteVisual,
 } from "@/components/v3/scenes";
 import { SHOWCASE, ShowcaseBand, type ShowcaseName } from "@/components/v3/showcase";
-import { StickyScene } from "@/components/v3/sticky-scene";
+import { FlightScene } from "@/components/v3/flight-scene";
 import { V3Button, V3PageHero, V3Section } from "@/components/v3/ui";
 import { money } from "@/content/pricing";
 import { serviceCategories, type Service } from "@/content/services";
@@ -133,7 +133,8 @@ export default function V3Services() {
             name={CHAPTER_SHOWCASE[category.id]}
           />
           <V3Section className="v3-scene-section" id={category.id} width="wide">
-            <StickyScene
+            <FlightScene
+              perStageVh={46}
               align={index % 2 === 1 ? "visual-left" : "visual-right"}
               body={CHAPTER_LEDE[category.id] ?? category.intro}
               eyebrow={`Chapter ${String(index + 1).padStart(2, "0")}`}

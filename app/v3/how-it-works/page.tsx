@@ -7,7 +7,7 @@ import {
 } from "@/components/v3/scenes";
 import { SHOWCASE, ShowcaseBand } from "@/components/v3/showcase";
 import { ScrollScene } from "@/components/v3/scroll-scene";
-import { StickyScene } from "@/components/v3/sticky-scene";
+import { FlightScene } from "@/components/v3/flight-scene";
 import { V3Button, V3PageHero, V3Section } from "@/components/v3/ui";
 import { howItWorksSteps } from "@/content/v3";
 
@@ -43,7 +43,7 @@ export default function V3HowItWorks() {
       />
 
       <V3Section className="v3-scene-section" width="wide">
-        <StickyScene
+        <FlightScene
           body="The same operation, four times: as you run it now, as it should be mapped, as it gets built, and as it is managed once live."
           eyebrow="The Arc"
           numbered

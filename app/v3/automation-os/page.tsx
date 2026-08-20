@@ -9,7 +9,7 @@ import {
   QualifierVisual,
 } from "@/components/v3/scenes";
 import { SHOWCASE, Showcase } from "@/components/v3/showcase";
-import { StickyScene } from "@/components/v3/sticky-scene";
+import { FlightScene } from "@/components/v3/flight-scene";
 import { V3Button, V3PageHero, V3Section } from "@/components/v3/ui";
 import { automationOsPricing, money } from "@/content/pricing";
 import { osModules } from "@/content/v3";
@@ -80,7 +80,7 @@ export default function V3AutomationOs() {
       </V3Section>
 
       <V3Section className="v3-scene-section" width="wide">
-        <StickyScene
+        <FlightScene
           body="Each system does one job well, and hands the next one everything it needs."
           eyebrow="Inside Automation OS"
           numbered

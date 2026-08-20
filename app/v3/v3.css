@@ -2543,8 +2543,11 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
 /* ------------------------ Automation OS headline swell -------------------- */
 
 .v3-os-headline-scene {
-  /* Long enough to swell and settle without feeling like a scroll trap. */
-  min-height: 260vh;
+  /* Short enough that the swell reads as a beat, not a hold. */
+  min-height: 150vh;
+  /* At full swell the headline is wider than the viewport; clip so it cannot
+     widen the page. `clip` keeps the sticky child working. */
+  overflow-x: clip;
 }
 
 .v3-os-headline-pin {
@@ -2557,7 +2560,7 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
 
 .v3-os-headline-pin .v3-os-head {
   margin-bottom: 0;
-  transform: scale(calc(1 + 0.62 * var(--scene-peak, 0)));
+  transform: scale(calc(1 + 0.7 * var(--scene-peak, 0)));
   transform-origin: center center;
   will-change: transform;
 }
@@ -2596,11 +2599,28 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
 }
 
 /*
- * The pricing block stays owned by the reveal system: its
- * `[data-reveal][data-revealed]` rules already control opacity and transform
- * at a higher specificity, and two systems writing the same properties is a
- * bug waiting to happen. The scene drives the console only.
+ * The reveal system owns opacity, transform, and filter on this block at a
+ * higher specificity, so the glow uses properties nothing else writes:
+ * text-shadow on the figures and the rule above them.
  */
+.v3-os-stack .v3-pricing-figure strong {
+  text-shadow: 0 0 calc(4px + 22px * var(--scene-p, 0))
+    rgba(47, 125, 246, calc(0.12 + 0.5 * var(--scene-p, 0)));
+}
+
+.v3-os-stack .v3-pricing-figure {
+  border-top-color: rgba(
+    47,
+    125,
+    246,
+    calc(0.08 + 0.55 * var(--scene-p, 0))
+  );
+}
+
+.v3-os-stack .v3-pricing-figure[data-lead="true"] strong {
+  text-shadow: 0 0 calc(6px + 30px * var(--scene-p, 0))
+    rgba(47, 125, 246, calc(0.2 + 0.6 * var(--scene-p, 0)));
+}
 
 /* ----------------------------- process spine ------------------------------ */
 
@@ -2652,5 +2672,169 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
   .v3-os-headline-pin {
     position: static;
     min-height: 0;
+  }
+}
+
+/* ==========================================================================
+   Flight scene — continuous camera dolly through stacked stages
+   ========================================================================== */
+
+.v3-flight {
+  position: relative;
+}
+
+.v3-flight-pin {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  /* Stages scale past the frame as they pass; clip so the page never widens. */
+  overflow: clip;
+}
+
+.v3-flight-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(32px, 5vw, 88px);
+  align-items: center;
+  width: var(--v3-container-wide);
+  margin-inline: auto;
+  padding-block: clamp(48px, 8vh, 96px);
+}
+
+.v3-flight[data-align="visual-left"] .v3-flight-copy {
+  order: 2;
+}
+
+.v3-flight[data-align="visual-left"] .v3-flight-stack {
+  order: 1;
+}
+
+.v3-flight-copy {
+  display: grid;
+  gap: 26px;
+  align-content: center;
+}
+
+.v3-flight-head {
+  display: grid;
+  gap: 16px;
+}
+
+.v3-flight-lede {
+  max-width: 44ch;
+}
+
+/* Step copy is stacked in one cell; the scene fades between entries. */
+.v3-flight-steps {
+  display: grid;
+  min-height: 15rem;
+}
+
+.v3-flight-step {
+  grid-area: 1 / 1;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  max-width: 44ch;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.v3-flight-step-index {
+  color: var(--v3-accent);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+}
+
+.v3-flight-step h3 {
+  font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  color: var(--yt-white);
+}
+
+.v3-flight-rail {
+  display: flex;
+  gap: 6px;
+  max-width: 260px;
+}
+
+.v3-flight-rail li {
+  height: 2px;
+  flex: 1;
+  background: var(--yt-border-strong);
+  transition: background 0.35s var(--v3-ease);
+}
+
+.v3-flight-rail li[data-active] {
+  background: var(--v3-accent);
+}
+
+/* Every stage occupies the same cell; only depth separates them. */
+.v3-flight-stack {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}
+
+.v3-flight-cell {
+  grid-area: 1 / 1;
+  width: 100%;
+  opacity: 0;
+  transform-origin: center center;
+  will-change: opacity, transform, filter;
+}
+
+.v3-flight-step-visual {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .v3-flight {
+    /* Stage travel is set inline; on narrow screens the copy needs the width. */
+    min-height: 0 !important;
+  }
+
+  .v3-flight-pin {
+    position: static;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .v3-flight-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .v3-flight-steps {
+    min-height: 0;
+    gap: 40px;
+  }
+
+  /* Without the camera, stages stack as ordinary content. */
+  .v3-flight-step {
+    grid-area: auto;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .v3-flight-stack {
+    display: none;
+  }
+
+  .v3-flight-step-visual {
+    display: block;
+    margin-top: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v3-flight-cell {
+    filter: none !important;
+    transform: none !important;
   }
 }

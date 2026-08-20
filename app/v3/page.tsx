@@ -11,7 +11,7 @@ import {
 } from "@/components/v3/scenes";
 import { SHOWCASE, Showcase, resolveShowcase } from "@/components/v3/showcase";
 import { ScrollScene } from "@/components/v3/scroll-scene";
-import { StickyScene } from "@/components/v3/sticky-scene";
+import { FlightScene } from "@/components/v3/flight-scene";
 import { V3Button, V3Section } from "@/components/v3/ui";
 import { automationOsPricing, money } from "@/content/pricing";
 import {
@@ -128,7 +128,7 @@ export default function V3Home() {
 
       {/* Scene 3 — system transformation */}
       <V3Section className="v3-scene-section" width="wide">
-        <StickyScene
+        <FlightScene
           body="We document the process you run today, redraw it as a system, then build it. Same operation, without the manual handoffs."
           eyebrow="System Transformation"
           numbered
