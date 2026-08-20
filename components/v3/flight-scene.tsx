@@ -22,7 +22,6 @@ const DEPTH = 0.62;
  * never snaps between stages — that continuity is the whole effect.
  */
 export function FlightScene({
-  align = "visual-right",
   body,
   eyebrow,
   id,
@@ -32,7 +31,6 @@ export function FlightScene({
   title,
   titleTag: TitleTag = "h2",
 }: {
-  align?: "visual-right" | "visual-left";
   body?: string;
   eyebrow?: string;
   id?: string;
@@ -44,8 +42,7 @@ export function FlightScene({
   titleTag?: "h2" | "h3";
 }) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const cellRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const copyRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const stageRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [active, setActive] = useState(0);
 
   useEffect(() => {
@@ -53,6 +50,27 @@ export function FlightScene({
     if (!section) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    /*
+     * Product windows are content-sized and taller than the row they get on
+     * short viewports. Scale each one down to fit rather than clipping it, so
+     * the whole interface stays visible at every window height.
+     */
+    const fitVisuals = () => {
+      const visuals =
+        section.querySelectorAll<HTMLElement>(".v3-flight-visual");
+      for (const visual of visuals) {
+        const child = visual.firstElementChild as HTMLElement | null;
+        if (!child) continue;
+        child.style.transform = "";
+        const natural = child.offsetHeight;
+        const available = visual.clientHeight;
+        if (!natural || !available) continue;
+        const fit = Math.min(1, available / natural);
+        child.style.transform = fit < 0.999 ? `scale(${fit.toFixed(4)})` : "";
+      }
+    };
+
     let frame = 0;
     let running = true;
     let activeIndex = -1;
@@ -67,13 +85,14 @@ export function FlightScene({
             ? 1
             : 0;
 
-      // Camera position, measured in stages.
+      // Camera position, measured in stages. Published so CSS (and tests)
+      // can see the live value.
+      section.style.setProperty("--flight-p", progress.toFixed(4));
       const camera = progress * (steps.length - 1);
       const nearest = Math.round(camera);
 
       for (let i = 0; i < steps.length; i += 1) {
-        const cell = cellRefs.current[i];
-        const copy = copyRefs.current[i];
+        const stage = stageRefs.current[i];
         // Distance ahead of the camera: 0 is filling the frame.
         const d = i - camera;
 
@@ -97,22 +116,12 @@ export function FlightScene({
           blur = Math.min(-d * 12, 16);
         }
 
-        if (cell) {
-          cell.style.opacity = opacity.toFixed(3);
-          cell.style.transform = `scale(${scale.toFixed(4)})`;
-          cell.style.filter = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : "";
-          cell.style.zIndex = String(200 - Math.round(Math.abs(d) * 10));
-          cell.style.pointerEvents = Math.abs(d) < 0.5 ? "auto" : "none";
-        }
-
-        if (copy) {
-          // Copy moves less than the visual so it stays readable throughout.
-          const copyOpacity = Math.min(1, Math.max(0, 1 - Math.abs(d) * 1.6));
-          copy.style.opacity = copyOpacity.toFixed(3);
-          copy.style.transform = reduced.matches
-            ? ""
-            : `translateY(${(d * 26).toFixed(1)}px)`;
-          copy.style.pointerEvents = copyOpacity > 0.5 ? "auto" : "none";
+        if (stage) {
+          stage.style.opacity = opacity.toFixed(3);
+          stage.style.transform = `scale(${scale.toFixed(4)})`;
+          stage.style.filter = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : "";
+          stage.style.zIndex = String(200 - Math.round(Math.abs(d) * 10));
+          stage.style.pointerEvents = Math.abs(d) < 0.5 ? "auto" : "none";
         }
       }
 
@@ -124,7 +133,11 @@ export function FlightScene({
       if (running) frame = requestAnimationFrame(apply);
     };
 
+    fitVisuals();
     frame = requestAnimationFrame(apply);
+
+    const resize = new ResizeObserver(fitVisuals);
+    resize.observe(section);
 
     const visibility = new IntersectionObserver(
       ([entry]) => {
@@ -144,13 +157,13 @@ export function FlightScene({
       running = false;
       cancelAnimationFrame(frame);
       visibility.disconnect();
+      resize.disconnect();
     };
   }, [steps.length]);
 
   return (
     <div
       className="v3-flight"
-      data-align={align}
       id={id}
       ref={sectionRef}
       style={{
@@ -158,24 +171,24 @@ export function FlightScene({
       }}
     >
       <div className="v3-flight-pin">
-        <div className="v3-flight-grid">
-          <div className="v3-flight-copy">
-            <div className="v3-flight-head">
-              {eyebrow ? <p className="v3-eyebrow">{eyebrow}</p> : null}
-              <TitleTag className="v3-scene-title">{title}</TitleTag>
-              {body ? <p className="v3-flight-lede">{body}</p> : null}
-            </div>
+        <div className="v3-flight-inner">
+          <div className="v3-flight-head">
+            {eyebrow ? <p className="v3-eyebrow">{eyebrow}</p> : null}
+            <TitleTag className="v3-scene-title">{title}</TitleTag>
+            {body ? <p className="v3-flight-lede">{body}</p> : null}
+          </div>
 
-            <div className="v3-flight-steps">
-              {steps.map((step, index) => (
-                <div
-                  className="v3-flight-step"
-                  data-active={index === active || undefined}
-                  key={step.id}
-                  ref={(node) => {
-                    copyRefs.current[index] = node;
-                  }}
-                >
+          <div className="v3-flight-stack">
+            {steps.map((step, index) => (
+              <div
+                className="v3-flight-stage"
+                data-active={index === active || undefined}
+                key={step.id}
+                ref={(node) => {
+                  stageRefs.current[index] = node;
+                }}
+              >
+                <div className="v3-flight-step">
                   {numbered ? (
                     <span className="v3-flight-step-index">
                       {String(index + 1).padStart(2, "0")}
@@ -184,35 +197,19 @@ export function FlightScene({
                   <h3>{step.label}</h3>
                   {step.body ? <p>{step.body}</p> : null}
                   {step.meta}
-                  {/* Narrow screens have no camera, so each stage carries
-                      its own visual inline. */}
-                  <div className="v3-flight-step-visual">{step.visual}</div>
                 </div>
-              ))}
-            </div>
-
-            <ol className="v3-flight-rail">
-              {steps.map((step, index) => (
-                <li data-active={index === active || undefined} key={step.id}>
-                  <span className="v3-sr-only">{step.label}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
-
-          <div className="v3-flight-stack">
-            {steps.map((step, index) => (
-              <div
-                className="v3-flight-cell"
-                key={step.id}
-                ref={(node) => {
-                  cellRefs.current[index] = node;
-                }}
-              >
-                {step.visual}
+                <div className="v3-flight-visual">{step.visual}</div>
               </div>
             ))}
           </div>
+
+          <ol className="v3-flight-rail">
+            {steps.map((step, index) => (
+              <li data-active={index === active || undefined} key={step.id}>
+                <span className="v3-sr-only">{step.label}</span>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </div>

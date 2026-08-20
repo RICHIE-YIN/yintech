@@ -250,6 +250,7 @@ export default function V3Home() {
         </div>
 
         {/* Pricing reveal — editorial numbers, not cards */}
+        <ScrollScene className="v3-pricing-scene" mode="enter">
         <div className="v3-pricing" data-reveal>
           <div className="v3-pricing-figure">
             <strong>{money(automationOsPricing.standaloneSetup)}</strong>
@@ -269,8 +270,8 @@ export default function V3Home() {
               {money(automationOsPricing.monthlySavings)}/mo
             </em>
           </div>
-        </div>
-
+          </div>
+          </ScrollScene>
         </ScrollScene>
 
         <div className="v3-button-row v3-centered" data-reveal>

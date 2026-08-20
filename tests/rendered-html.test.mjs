@@ -547,7 +547,7 @@ test("V3 is the V2 design plus scroll-driven scene mechanics", async () => {
   assert.match(flight, /const camera = progress \* \(steps\.length - 1\)/);
   assert.match(flight, /scale = 1 \/ \(1 \+ d \* DEPTH\)/);
   assert.match(flight, /scale = 1 \+ -d \* 0\.9/);
-  assert.match(css, /\.v3-flight-cell/);
+  assert.match(css, /\.v3-flight-stage/);
 
   // The Automation OS headline swells while pinned, then settles.
   assert.match(v3Home, /v3-os-headline-scene/);
@@ -557,8 +557,9 @@ test("V3 is the V2 design plus scroll-driven scene mechanics", async () => {
   assert.match(v3Home, /v3-os-stack/);
   assert.match(css, /\.v3-os-stack \.v3-os-console/);
 
-  // Pricing glows via text-shadow, which no other system writes.
-  assert.match(css, /\.v3-os-stack \.v3-pricing-figure strong \{[^}]*text-shadow/s);
+  // Pricing glows via colour and text-shadow, which no other system writes.
+  assert.match(v3Home, /v3-pricing-scene/);
+  assert.match(css, /\.v3-pricing-scene \.v3-pricing-figure strong \{[^}]*text-shadow/s);
 
   // Both step lists get the scroll-drawn spine.
   assert.match(v3Home, /v3-steps-scene/);

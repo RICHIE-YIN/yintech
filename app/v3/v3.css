@@ -2601,25 +2601,69 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
 /*
  * The reveal system owns opacity, transform, and filter on this block at a
  * higher specificity, so the glow uses properties nothing else writes:
- * text-shadow on the figures and the rule above them.
+ * colour, text-shadow, and a bloom layer behind the figures.
+ *
+ * `--glow` is squared-off early so the section is already lit by the time the
+ * figures reach the middle of the screen, rather than peaking after they pass.
  */
-.v3-os-stack .v3-pricing-figure strong {
-  text-shadow: 0 0 calc(4px + 22px * var(--scene-p, 0))
-    rgba(47, 125, 246, calc(0.12 + 0.5 * var(--scene-p, 0)));
+.v3-pricing-scene {
+  --glow: clamp(0, calc(var(--scene-p, 0) * 1.9), 1);
+  position: relative;
+  display: block;
 }
 
-.v3-os-stack .v3-pricing-figure {
-  border-top-color: rgba(
-    47,
-    125,
-    246,
-    calc(0.08 + 0.55 * var(--scene-p, 0))
+.v3-pricing-scene::before {
+  content: "";
+  position: absolute;
+  inset: -14% 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    58% 62% at 50% 50%,
+    rgba(47, 125, 246, calc(0.3 * var(--glow))) 0%,
+    rgba(47, 125, 246, calc(0.12 * var(--glow))) 42%,
+    transparent 72%
   );
+  filter: blur(26px);
 }
 
-.v3-os-stack .v3-pricing-figure[data-lead="true"] strong {
-  text-shadow: 0 0 calc(6px + 30px * var(--scene-p, 0))
-    rgba(47, 125, 246, calc(0.2 + 0.6 * var(--scene-p, 0)));
+.v3-pricing-scene .v3-pricing {
+  position: relative;
+  z-index: 1;
+}
+
+.v3-pricing-scene .v3-pricing-figure strong {
+  color: color-mix(
+    in srgb,
+    var(--yt-white),
+    var(--yt-blue-hover) calc(62% * var(--glow))
+  );
+  text-shadow:
+    0 0 calc(10px + 26px * var(--glow)) rgba(74, 145, 255, calc(0.85 * var(--glow))),
+    0 0 calc(3px + 8px * var(--glow)) rgba(160, 205, 255, calc(0.6 * var(--glow)));
+}
+
+.v3-pricing-scene .v3-pricing-figure[data-lead="true"] strong {
+  color: color-mix(
+    in srgb,
+    var(--yt-blue-hover),
+    #cfe4ff calc(45% * var(--glow))
+  );
+  text-shadow:
+    0 0 calc(14px + 38px * var(--glow)) rgba(74, 145, 255, calc(1 * var(--glow))),
+    0 0 calc(4px + 12px * var(--glow)) rgba(190, 220, 255, calc(0.75 * var(--glow)));
+}
+
+.v3-pricing-scene .v3-pricing-figure {
+  border-top-color: rgba(74, 145, 255, calc(0.1 + 0.75 * var(--glow)));
+}
+
+.v3-pricing-scene .v3-pricing-figure span {
+  color: color-mix(
+    in srgb,
+    var(--yt-white),
+    var(--yt-blue-hover) calc(35% * var(--glow))
+  );
 }
 
 /* ----------------------------- process spine ------------------------------ */
@@ -2676,7 +2720,7 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
 }
 
 /* ==========================================================================
-   Flight scene — continuous camera dolly through stacked stages
+   Flight scene — copy and visual fly together, header stays put
    ========================================================================== */
 
 .v3-flight {
@@ -2693,53 +2737,61 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
   overflow: clip;
 }
 
-.v3-flight-grid {
+.v3-flight-inner {
   display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
-  gap: clamp(32px, 5vw, 88px);
-  align-items: center;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: clamp(20px, 3vh, 40px);
   width: var(--v3-container-wide);
+  height: 100svh;
   margin-inline: auto;
-  padding-block: clamp(48px, 8vh, 96px);
+  padding-block: clamp(76px, 11vh, 116px) clamp(28px, 5vh, 56px);
 }
 
-.v3-flight[data-align="visual-left"] .v3-flight-copy {
-  order: 2;
-}
-
-.v3-flight[data-align="visual-left"] .v3-flight-stack {
-  order: 1;
-}
-
-.v3-flight-copy {
-  display: grid;
-  gap: 26px;
-  align-content: center;
-}
-
+/* Section title holds still while the stages travel past it. */
 .v3-flight-head {
   display: grid;
-  gap: 16px;
+  gap: 12px;
+  justify-items: center;
+  text-align: center;
+  max-width: 62ch;
+  margin-inline: auto;
 }
 
 .v3-flight-lede {
-  max-width: 44ch;
+  max-width: 62ch;
 }
 
-/* Step copy is stacked in one cell; the scene fades between entries. */
-.v3-flight-steps {
+/* Every stage occupies the same cell; only depth separates them. */
+.v3-flight-stack {
   display: grid;
-  min-height: 15rem;
+  /* Stretch, not centre: centring sizes each stage to its content, which
+     lets a tall product window push the stage past the viewport. */
+  align-items: stretch;
+  justify-items: stretch;
+  min-height: 0;
+  min-width: 0;
+}
+
+.v3-flight-stage {
+  grid-area: 1 / 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: clamp(14px, 2.2vh, 26px);
+  justify-items: center;
+  align-content: center;
+  width: 100%;
+  min-height: 0;
+  opacity: 0;
+  transform-origin: center center;
+  will-change: opacity, transform, filter;
 }
 
 .v3-flight-step {
-  grid-area: 1 / 1;
   display: grid;
-  gap: 12px;
-  align-content: start;
-  max-width: 44ch;
-  opacity: 0;
-  will-change: opacity, transform;
+  gap: 8px;
+  justify-items: center;
+  text-align: center;
+  max-width: 60ch;
 }
 
 .v3-flight-step-index {
@@ -2750,17 +2802,39 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
 }
 
 .v3-flight-step h3 {
-  font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
   line-height: 1.08;
   letter-spacing: -0.03em;
   font-weight: 600;
   color: var(--yt-white);
 }
 
+.v3-flight-step p {
+  max-width: 56ch;
+}
+
+/* The product window scales to whatever height the stage has left. */
+.v3-flight-visual {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 0;
+  /* Definite box for the fit-scale measurement in FlightScene. */
+  overflow: hidden;
+}
+
+.v3-flight-visual > * {
+  width: min(100%, 1080px);
+  /* Scaled to fit by FlightScene; origin keeps it centred as it shrinks. */
+  transform-origin: center center;
+}
+
 .v3-flight-rail {
   display: flex;
   gap: 6px;
-  max-width: 260px;
+  justify-content: center;
+  width: min(360px, 70%);
+  margin-inline: auto;
 }
 
 .v3-flight-rail li {
@@ -2772,21 +2846,6 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
 
 .v3-flight-rail li[data-active] {
   background: var(--v3-accent);
-}
-
-/* Every stage occupies the same cell; only depth separates them. */
-.v3-flight-stack {
-  display: grid;
-  place-items: center;
-  min-width: 0;
-}
-
-.v3-flight-cell {
-  grid-area: 1 / 1;
-  width: 100%;
-  opacity: 0;
-  transform-origin: center center;
-  will-change: opacity, transform, filter;
 }
 
 .v3-flight-step-visual {
@@ -2805,35 +2864,51 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
     overflow: visible;
   }
 
-  .v3-flight-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 28px;
+  .v3-flight-inner {
+    height: auto;
+    grid-template-rows: none;
+    padding-block: 0;
   }
 
-  .v3-flight-steps {
-    min-height: 0;
-    gap: 40px;
+  .v3-flight-head {
+    text-align: left;
+    justify-items: start;
   }
 
   /* Without the camera, stages stack as ordinary content. */
-  .v3-flight-step {
+  .v3-flight-stack {
+    display: grid;
+    gap: 56px;
+    place-items: stretch;
+  }
+
+  .v3-flight-stage {
     grid-area: auto;
+    grid-template-rows: none;
+    height: auto;
+    justify-items: start;
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
   }
 
-  .v3-flight-stack {
+  .v3-flight-step {
+    text-align: left;
+    justify-items: start;
+  }
+
+  .v3-flight-visual > * {
+    max-height: none;
+    width: 100%;
+  }
+
+  .v3-flight-rail {
     display: none;
-  }
-
-  .v3-flight-step-visual {
-    display: block;
-    margin-top: 4px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .v3-flight-cell {
+  .v3-flight-stage {
     filter: none !important;
     transform: none !important;
   }
