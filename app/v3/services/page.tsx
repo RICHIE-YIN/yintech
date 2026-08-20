@@ -134,7 +134,7 @@ export default function V3Services() {
           />
           <V3Section className="v3-scene-section" id={category.id} width="wide">
             <FlightScene
-              perStageVh={46}
+              perStageVh={30}
               body={CHAPTER_LEDE[category.id] ?? category.intro}
               eyebrow={`Chapter ${String(index + 1).padStart(2, "0")}`}
               id={`${category.id}-scene`}

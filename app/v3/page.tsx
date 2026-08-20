@@ -107,7 +107,7 @@ export default function V3Home() {
       </V3Section>
 
       {/* Scene 2 — problem statement */}
-      <V3Section className="v3-statement">
+      <V3Section className="v3-statement v3-snap-section">
         <h2 className="v3-statement-title" data-reveal>
           Your business should not run on repetitive work.
         </h2>
@@ -164,7 +164,7 @@ export default function V3Home() {
       </V3Section>
 
       {/* Scene 4 — what YinTech builds */}
-      <V3Section className="v3-build" width="wide">
+      <V3Section className="v3-build v3-snap-section" width="wide">
         <div className="v3-section-head" data-reveal>
           <p className="v3-eyebrow">What YinTech Builds</p>
           <h2 className="v3-scene-title">
@@ -214,7 +214,7 @@ export default function V3Home() {
       </V3Section>
 
       {/* Scene 5 — Automation OS */}
-      <V3Section className="v3-os" width="wide">
+      <V3Section className="v3-os v3-snap-section" width="wide">
         <div className="v3-os-headline-block">
           <div aria-hidden="true" className="v3-os-aura">
             <span className="v3-os-aura-mark" />
@@ -256,7 +256,7 @@ export default function V3Home() {
         </div>
 
         {/* Pricing reveal — editorial numbers, not cards */}
-        <ScrollScene className="v3-pricing-scene" mode="enter">
+        <ScrollScene className="v3-pricing-scene v3-snap-section" mode="enter">
         <div className="v3-pricing" data-reveal>
           <div className="v3-pricing-figure">
             <strong>{money(automationOsPricing.standaloneSetup)}</strong>
@@ -288,7 +288,7 @@ export default function V3Home() {
       </V3Section>
 
       {/* Scene 6 — process */}
-      <V3Section className="v3-process">
+      <V3Section className="v3-process v3-snap-section">
         <div className="v3-section-head" data-reveal>
           <p className="v3-eyebrow">How We Work</p>
           <h2 className="v3-scene-title">Four steps, no mystery.</h2>
@@ -309,7 +309,7 @@ export default function V3Home() {
       </V3Section>
 
       {/* Scene 7 — final CTA */}
-      <V3Section className="v3-final">
+      <V3Section className="v3-final v3-snap-section">
         <div className="v3-final-inner" data-reveal>
           <h2 className="v3-display">
             Show us the repetitive work.

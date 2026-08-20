@@ -21,7 +21,7 @@ export function FlightScene({
   eyebrow,
   id,
   numbered = false,
-  perStageVh = 64,
+  perStageVh = 38,
   steps,
   title,
   titleTag: TitleTag = "h2",

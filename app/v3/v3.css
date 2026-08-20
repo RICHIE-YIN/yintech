@@ -2580,9 +2580,9 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
   transform: translate(-50%, -50%) rotate(-4deg);
   background: linear-gradient(
     150deg,
-    rgba(255, 255, 255, 0.07) 0%,
-    rgba(47, 125, 246, 0.11) 55%,
-    rgba(47, 125, 246, 0.03) 100%
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(47, 125, 246, 0.26) 55%,
+    rgba(47, 125, 246, 0.09) 100%
   );
   -webkit-mask-image: url("/brand/yintech-motif.svg");
   mask-image: url("/brand/yintech-motif.svg");
@@ -2592,13 +2592,13 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
-  filter: blur(1px);
 }
 
 .v3-os-aura-bokeh {
   position: absolute;
   border-radius: 50%;
-  filter: blur(28px);
+  /* Tighter blur so the orbs read as light rather than haze. */
+  filter: blur(18px);
 }
 
 .v3-os-aura-bokeh[data-orb="1"] {
@@ -2606,7 +2606,7 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
   height: 190px;
   top: 6%;
   left: 12%;
-  background: radial-gradient(circle, rgba(47, 125, 246, 0.22), transparent 68%);
+  background: radial-gradient(circle, rgba(47, 125, 246, 0.4), transparent 68%);
 }
 
 .v3-os-aura-bokeh[data-orb="2"] {
@@ -2614,7 +2614,7 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
   height: 130px;
   top: 62%;
   left: 24%;
-  background: radial-gradient(circle, rgba(127, 186, 255, 0.16), transparent 68%);
+  background: radial-gradient(circle, rgba(127, 186, 255, 0.3), transparent 68%);
 }
 
 .v3-os-aura-bokeh[data-orb="3"] {
@@ -2622,7 +2622,7 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
   height: 220px;
   top: 14%;
   right: 10%;
-  background: radial-gradient(circle, rgba(47, 125, 246, 0.18), transparent 70%);
+  background: radial-gradient(circle, rgba(47, 125, 246, 0.34), transparent 70%);
 }
 
 .v3-os-aura-bokeh[data-orb="4"] {
@@ -2630,7 +2630,7 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
   height: 110px;
   bottom: 8%;
   right: 22%;
-  background: radial-gradient(circle, rgba(200, 224, 255, 0.13), transparent 66%);
+  background: radial-gradient(circle, rgba(200, 224, 255, 0.26), transparent 66%);
 }
 
 @media (max-width: 900px) {
@@ -2838,6 +2838,17 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
  */
 html:has(.v3) {
   scroll-snap-type: y proximity;
+}
+
+/*
+ * Section-level snaps settle the page on each major moment. `normal` rather
+ * than `always`, so a long fling can still cross several sections — only the
+ * flight stages force a stop. scroll-margin clears the sticky header.
+ */
+.v3-snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+  scroll-margin-top: 64px;
 }
 
 .v3-flight-snaps {
