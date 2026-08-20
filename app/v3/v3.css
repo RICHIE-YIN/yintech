@@ -2693,42 +2693,56 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
 }
 
 /*
- * Lift is applied to the item's children, not the item: the reveal system
- * owns transform on the <li> at higher specificity.
+ * These items opted out of the reveal system (no `data-reveal`), so the
+ * elevation owns transform on the <li> directly and the whole card can
+ * expand as it passes. `--near` falls back to 1 so the list is fully legible
+ * if the script never runs.
  */
-.v3-steps-scene .v3-steps li .v3-step-number,
-.v3-steps-scene .v3-steps li .v3-step-copy {
-  transform: translateY(calc((1 - var(--near, 0)) * 14px));
-  transition: transform 240ms var(--v3-ease);
+.v3-steps-scene .v3-steps li {
+  position: relative;
+  padding: clamp(22px, 2.4vw, 34px) clamp(20px, 2.4vw, 34px);
+  border: 1px solid
+    rgba(255, 255, 255, calc(0.05 + 0.09 * var(--near, 1)));
+  border-radius: 16px;
+  background: linear-gradient(
+    120deg,
+    rgba(47, 125, 246, calc(0.06 * var(--near, 1))) 0%,
+    rgba(255, 255, 255, calc(0.012 + 0.022 * var(--near, 1))) 60%
+  );
+  opacity: calc(0.45 + 0.55 * var(--near, 1));
+  /* Passing card grows past its resting size so the expansion actually reads. */
+  transform: translateY(calc((1 - var(--near, 1)) * 18px))
+    scale(calc(0.94 + 0.09 * var(--near, 1)));
+  transform-origin: center center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, calc(0.42 * var(--near, 1)));
+  transition:
+    transform 320ms var(--v3-ease),
+    opacity 320ms var(--v3-ease),
+    background 320ms var(--v3-ease),
+    border-color 320ms var(--v3-ease),
+    box-shadow 320ms var(--v3-ease);
+}
+
+.v3-steps-scene .v3-steps {
+  display: grid;
+  gap: clamp(14px, 1.8vw, 22px);
 }
 
 .v3-steps-scene .v3-steps li .v3-step-number {
   color: color-mix(
     in srgb,
     var(--yt-surface-2),
-    var(--v3-accent) calc(70% * var(--near, 0))
+    var(--v3-accent) calc(75% * var(--near, 1))
   );
-  transition: transform 240ms var(--v3-ease), color 320ms var(--v3-ease);
+  transition: color 320ms var(--v3-ease);
 }
 
 .v3-steps-scene .v3-steps li .v3-step-copy h3 {
   color: color-mix(
     in srgb,
     var(--yt-gray-1),
-    var(--yt-white) calc(100% * var(--near, 0))
+    var(--yt-white) calc(100% * var(--near, 1))
   );
-}
-
-/* A faint plate under whichever step is passing. */
-.v3-steps-scene .v3-steps li {
-  position: relative;
-  border-radius: 14px;
-  background: linear-gradient(
-    90deg,
-    rgba(47, 125, 246, calc(0.05 * var(--near, 0))) 0%,
-    transparent 62%
-  );
-  transition: background 320ms var(--v3-ease);
 }
 
 @media (prefers-reduced-motion: reduce) {

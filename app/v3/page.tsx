@@ -291,7 +291,7 @@ export default function V3Home() {
         <ElevateList className="v3-steps-scene">
         <ol className="v3-steps">
           {processSteps.map((step) => (
-            <li data-reveal key={step.number}>
+            <li key={step.number}>
               <span className="v3-step-number">{step.number}</span>
               <div className="v3-step-copy">
                 <h3>{step.title}</h3>

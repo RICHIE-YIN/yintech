@@ -107,13 +107,18 @@ export function FlightScene({
         } else if (d >= 0) {
           // Approaching: small and soft, resolving as it nears.
           scale = 1 / (1 + d * DEPTH);
-          opacity = Math.min(1, Math.max(0, 1.2 - d * 0.8));
-          blur = Math.min(d * 4.5, 12);
+          /*
+           * Reaches zero exactly at the halfway point between stages: no two
+           * stages are ever legible together (the overlap that read as
+           * ghosting), and the handoff still has no blank frame in it.
+           */
+          opacity = Math.min(1, Math.max(0, 1 - d * 2));
+          blur = Math.min(d * 9, 16);
         } else {
           // Passing the viewer: blows past the frame and dissolves.
           scale = 1 + -d * 0.9;
-          opacity = Math.min(1, Math.max(0, 1 + d * 1.7));
-          blur = Math.min(-d * 12, 16);
+          opacity = Math.min(1, Math.max(0, 1 + d * 2));
+          blur = Math.min(-d * 18, 20);
         }
 
         if (stage) {
