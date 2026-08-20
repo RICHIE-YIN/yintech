@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   ConnectedOperationVisual,
@@ -8,7 +9,7 @@ import {
   OsConsole,
   QualifierVisual,
 } from "@/components/v2/scenes";
-import { SHOWCASE, Showcase } from "@/components/v2/showcase";
+import { SHOWCASE, Showcase, resolveShowcase } from "@/components/v2/showcase";
 import { StickyScene } from "@/components/v2/sticky-scene";
 import { V2Button, V2Section } from "@/components/v2/ui";
 import { automationOsPricing, money } from "@/content/pricing";
@@ -22,13 +23,32 @@ import {
 } from "@/content/v2";
 
 export default function V2Home() {
+  const backdrop = resolveShowcase(SHOWCASE.heroBackdrop);
+  const hasBackdrop = backdrop !== null;
+
   return (
     <>
       {/* Scene 1 — hero */}
-      <V2Section className="v2-hero" width="wide">
+      <V2Section className="v2-hero" data-backdrop={hasBackdrop || undefined} width="wide">
         <div aria-hidden="true" className="v2-hero-atmosphere">
-          <span className="v2-hero-motif" />
-          <span className="v2-hero-blueprint" />
+          {hasBackdrop ? (
+            <>
+              <Image
+                alt=""
+                className="v2-hero-backdrop"
+                fill
+                priority
+                sizes="100vw"
+                src={backdrop!.src}
+              />
+              <span className="v2-hero-scrim" />
+            </>
+          ) : (
+            <>
+              <span className="v2-hero-motif" />
+              <span className="v2-hero-blueprint" />
+            </>
+          )}
         </div>
         <div className="v2-hero-grid">
           <div className="v2-hero-copy">
@@ -50,25 +70,36 @@ export default function V2Home() {
             </div>
           </div>
           <div className="v2-hero-visual" data-enter="4">
-            <Showcase
-              alt="An inbound lead console: a scored list of new leads, a qualification score of 87 broken down by budget, authority, need, and timeline, and a follow-up sequence already scheduled."
-              fallback={<HeroConsole />}
-              name={SHOWCASE.hero}
-              priority
-            />
-            <div aria-hidden="true" className="v2-hero-card" data-pos="lead">
-              <span className="v2-hero-card-label">Lead flow</span>
-              <strong className="v2-hero-card-value">128</strong>
-              <span className="v2-hero-card-meta">New leads this week</span>
-            </div>
-            <div aria-hidden="true" className="v2-hero-card" data-pos="status">
-              <span className="v2-hero-card-label">Automation status</span>
-              <ul className="v2-hero-card-list">
-                <li>Lead qualification<span>Active</span></li>
-                <li>Follow-up sequences<span>Active</span></li>
-                <li>Quote generation<span>Active</span></li>
-              </ul>
-            </div>
+            {hasBackdrop ? (
+              <div aria-hidden="true" className="v2-hero-readouts">
+                <div className="v2-hero-card" data-pos="lead">
+                  <span className="v2-hero-card-label">Lead flow</span>
+                  <strong className="v2-hero-card-value">128</strong>
+                  <span className="v2-hero-card-meta">New leads this week</span>
+                </div>
+                <div className="v2-hero-card" data-pos="status">
+                  <span className="v2-hero-card-label">Automation status</span>
+                  <ul className="v2-hero-card-list">
+                    <li>Lead qualification<span>Active</span></li>
+                    <li>Follow-up sequences<span>Active</span></li>
+                    <li>Quote generation<span>Active</span></li>
+                    <li>Reporting<span>Active</span></li>
+                  </ul>
+                </div>
+                <div className="v2-hero-card" data-pos="overview">
+                  <span className="v2-hero-card-label">Response time</span>
+                  <strong className="v2-hero-card-value">6m</strong>
+                  <span className="v2-hero-card-meta">Down from 2 days</span>
+                </div>
+              </div>
+            ) : (
+              <Showcase
+                alt="An inbound lead console: a scored list of new leads, a qualification score of 87, and a scheduled follow-up sequence."
+                fallback={<HeroConsole />}
+                name={SHOWCASE.hero}
+                priority
+              />
+            )}
           </div>
         </div>
       </V2Section>
@@ -150,7 +181,19 @@ export default function V2Home() {
                 </Link>
               </div>
               <div className="v2-tile-visual">
-                {index === 0 ? <QualifierVisual /> : <CrmVisual />}
+                {index === 0 ? (
+                  <Showcase
+                    alt="An inbound lead console: a scored list of new leads, a qualification score of 87 broken down by budget, authority, need, and timeline, and a follow-up sequence already scheduled."
+                    fallback={<QualifierVisual />}
+                    name={SHOWCASE.hero}
+                  />
+                ) : (
+                  <Showcase
+                    alt="A CRM workspace: a five-stage pipeline board, a contact record with its activity history, and an executive dashboard."
+                    fallback={<CrmVisual />}
+                    name={SHOWCASE.crmSystems}
+                  />
+                )}
               </div>
             </article>
           ))}

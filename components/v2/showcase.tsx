@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
  */
 export const SHOWCASE = {
   hero: "hero-system-showcase",
+  heroBackdrop: "hero-backdrop",
   salesAutomation: "services-sales-automation-showcase",
   quotesOperations: "services-quotes-operations-showcase",
   crmSystems: "services-crm-systems-showcase",

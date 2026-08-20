@@ -25,12 +25,13 @@
   --yt-blue-hover: #4a91ff;
   --yt-blue-soft: rgba(47, 125, 246, 0.12);
 
-  /* Site accent: burnt amber. Everything the site itself does. */
-  --v2-accent: #e07a32;
-  --v2-accent-hover: #f0904a;
-  --v2-accent-ink: #140a03;
-  --v2-accent-soft: rgba(224, 122, 50, 0.12);
-  --v2-accent-line: rgba(224, 122, 50, 0.35);
+  /* Site accent. Kept as its own token so chrome can be retuned in one
+     place; currently the brand blue, matching the logo. */
+  --v2-accent: var(--yt-blue);
+  --v2-accent-hover: var(--yt-blue-hover);
+  --v2-accent-ink: #ffffff;
+  --v2-accent-soft: var(--yt-blue-soft);
+  --v2-accent-line: rgba(47, 125, 246, 0.35);
   /* Filled-button blue is a step deeper so white label text clears AA. */
   --yt-blue-cta: #2569d8;
 
@@ -188,7 +189,7 @@
 }
 
 .v2 .v2-button-primary {
-  background: var(--v2-accent);
+  background: var(--yt-blue-cta);
   /* Scoped under .v2 to outrank `.v2 a { color: inherit }`; a bare class
      loses that specificity race and the label falls back to inherited white,
      which does not clear AA on amber. */
@@ -196,7 +197,7 @@
 }
 
 .v2 .v2-button-primary:hover {
-  background: var(--v2-accent-hover);
+  background: var(--yt-blue);
   color: var(--v2-accent-ink);
 }
 
@@ -2268,8 +2269,8 @@ html[data-yt-intro="skipping"] .v2-intro-logo {
   background: linear-gradient(
     155deg,
     rgba(255, 255, 255, 0.055) 0%,
-    rgba(224, 122, 50, 0.07) 55%,
-    rgba(224, 122, 50, 0.02) 100%
+    rgba(47, 125, 246, 0.07) 55%,
+    rgba(47, 125, 246, 0.02) 100%
   );
   -webkit-mask-image: url("/brand/yintech-motif.svg");
   mask-image: url("/brand/yintech-motif.svg");
@@ -2299,29 +2300,75 @@ html[data-yt-intro="skipping"] .v2-intro-logo {
   position: relative;
 }
 
-/* Sample product readouts, floated off the frame edges for depth. */
+/* ------------------------- backdrop hero (homepage) ----------------------- */
+
+.v2-hero[data-backdrop] {
+  min-height: min(92vh, 900px);
+  display: flex;
+  align-items: center;
+  padding-block: clamp(56px, 9vh, 120px);
+}
+
+.v2-hero-backdrop {
+  object-fit: cover;
+  object-position: 72% center;
+}
+
+/*
+ * The render is already dark on the left, but copy cannot depend on artwork
+ * for contrast — this scrim guarantees it at every viewport.
+ */
+.v2-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, var(--yt-black) 0%, rgba(8, 8, 8, 0.82) 34%, rgba(8, 8, 8, 0.15) 68%, transparent 100%),
+    linear-gradient(180deg, rgba(8, 8, 8, 0.55) 0%, transparent 26%, transparent 72%, var(--yt-black) 100%);
+}
+
+.v2-hero[data-backdrop] .v2-hero-grid {
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  min-height: 0;
+}
+
+.v2-hero[data-backdrop] .v2-hero-copy {
+  max-width: 34ch;
+}
+
+/* Sample product readouts, floated over the structure on the right. */
+.v2-hero-readouts {
+  position: relative;
+  min-height: 460px;
+}
+
 .v2-hero-card {
   position: absolute;
   display: grid;
   gap: 4px;
-  padding: 14px 16px;
+  padding: 15px 17px;
   border: 1px solid var(--yt-border-strong);
   border-radius: 12px;
-  background: rgba(19, 19, 22, 0.72);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  background: rgba(16, 17, 21, 0.66);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.5);
 }
 
 .v2-hero-card[data-pos="lead"] {
-  top: 10%;
-  left: -7%;
-  min-width: 168px;
+  top: 2%;
+  left: 2%;
+  min-width: 178px;
 }
 
 .v2-hero-card[data-pos="status"] {
-  bottom: -6%;
-  right: 6%;
-  min-width: 216px;
+  top: 26%;
+  right: 0;
+  min-width: 226px;
+}
+
+.v2-hero-card[data-pos="overview"] {
+  bottom: 4%;
+  left: 12%;
+  min-width: 178px;
 }
 
 .v2-hero-card-label {
@@ -2332,7 +2379,7 @@ html[data-yt-intro="skipping"] .v2-intro-logo {
 }
 
 .v2-hero-card-value {
-  font-size: 1.9rem;
+  font-size: 1.95rem;
   line-height: 1;
   font-weight: 600;
   letter-spacing: -0.035em;
@@ -2347,15 +2394,15 @@ html[data-yt-intro="skipping"] .v2-intro-logo {
 
 .v2-hero-card-list {
   display: grid;
-  gap: 7px;
-  margin-top: 4px;
+  gap: 8px;
+  margin-top: 5px;
 }
 
 .v2-hero-card-list li {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 18px;
   font-size: 0.79rem;
   color: var(--yt-gray-1);
 }
@@ -2367,9 +2414,23 @@ html[data-yt-intro="skipping"] .v2-intro-logo {
   text-transform: uppercase;
 }
 
-/* The floated cards need room the narrower layouts do not have. */
-@media (max-width: 1180px) {
-  .v2-hero-card {
+/* Below this the copy needs the full width and the readouts have nowhere to sit. */
+@media (max-width: 1080px) {
+  .v2-hero[data-backdrop] .v2-hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .v2-hero-readouts {
     display: none;
   }
+
+  .v2-hero-backdrop {
+    object-position: 78% center;
+  }
+
+  .v2-hero-scrim {
+    background:
+      linear-gradient(180deg, rgba(8, 8, 8, 0.86) 0%, rgba(8, 8, 8, 0.72) 46%, rgba(8, 8, 8, 0.9) 100%);
+  }
 }
+
