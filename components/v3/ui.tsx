@@ -5,7 +5,6 @@ import {
   SHOWCASE,
   hasShowcase,
 } from "@/components/v3/showcase";
-import { SnapRail } from "@/components/v3/snap-rail";
 import { cn } from "@/lib/utils";
 import { v3Site } from "@/content/v3";
 
@@ -40,9 +39,6 @@ export function V3Section({
 }) {
   return (
     <section className={cn("v3-section", className)} id={id}>
-      {/* Every section carries snap coverage, so mandatory snapping never
-          strands content on any V3 page. */}
-      <SnapRail />
       <div className="v3-container" data-width={width}>
         {children}
       </div>
@@ -65,7 +61,6 @@ export function V3PageHero({
       className="v3-section v3-page-hero"
       data-backdrop={backdrop || undefined}
     >
-      <SnapRail />
       <PageHeroBackdrop />
       <div className="v3-container" data-width={width}>
         {children}
@@ -77,7 +72,6 @@ export function V3PageHero({
 export function V3Footer() {
   return (
     <footer className="v3-footer">
-      <SnapRail />
       <div className="v3-container" data-width="standard">
         <div className="v3-footer-top">
           <p className="v3-footer-statement">

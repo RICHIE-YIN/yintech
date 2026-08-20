@@ -952,8 +952,6 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
 /* --------------------------------- footer -------------------------------- */
 
 .v3-footer {
-  /* Positioned so its snap rail measures against the footer, not the page. */
-  position: relative;
   border-top: 1px solid var(--yt-border);
   padding-block: clamp(48px, 6vw, 80px);
 }
@@ -2831,69 +2829,6 @@ html[data-yt-intro="skipping"] .v3-intro-logo {
   position: relative;
 }
 
-/*
- * Snapping has to live on the scroll container, which is the document — but
- * `:has(.v3)` keeps it to pages that actually render this concept. Proximity
- * rather than mandatory so nobody is trapped scrolling past the section;
- * `scroll-snap-stop: always` on the sentinels still makes one flick advance
- * exactly one stage.
- */
-html:has(.v3) {
-  /*
-   * Mandatory, not proximity. Proximity only snaps when a gesture happens to
-   * end near a point, which on a trackpad is almost never — the section snaps
-   * were there but could not be felt. Every section carries a rail of points
-   * about a screen apart, so mandatory never strands content.
-   */
-  scroll-snap-type: y mandatory;
-}
-
-/*
- * The rail carries the snap points; the section itself is not a snap area, so
- * a tall section cannot pull the page back to its top.
- */
-.v3-snap-rail {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.v3-snap-rail span[data-edge="end"] {
-  top: auto;
-  bottom: 0;
-  scroll-snap-align: end;
-  scroll-margin-top: 0;
-}
-
-.v3-snap-rail span {
-  position: absolute;
-  left: 0;
-  width: 1px;
-  height: 1px;
-  scroll-snap-align: start;
-  /*
-   * `normal`, so a fast fling can still cross several screens — it just lands
-   * aligned. Only the flight stages force a stop at every single point.
-   */
-  scroll-snap-stop: normal;
-  scroll-margin-top: 64px;
-}
-
-.v3-flight-snaps {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.v3-flight-snaps span {
-  position: absolute;
-  left: 0;
-  width: 1px;
-  height: 1px;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
-
 .v3-flight-pin {
   position: sticky;
   top: 0;
@@ -3050,20 +2985,7 @@ html:has(.v3) {
 }
 
 @media (max-width: 900px) {
-  /*
-   * No camera on narrow screens, so the sentinels no longer line up with
-   * anything — snapping would just stop the page at arbitrary points.
-   */
-  html:has(.v3) {
-    scroll-snap-type: none;
-  }
-
-  .v3-flight-snaps span {
-    scroll-snap-align: none;
-    scroll-snap-stop: normal;
-  }
-
-  .v3-flight {
+      .v3-flight {
     /* Stage travel is set inline; on narrow screens the copy needs the width. */
     min-height: 0 !important;
   }
