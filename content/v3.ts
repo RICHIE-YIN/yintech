@@ -1,103 +1,86 @@
 /**
- * V3 copy. Same business facts as V1/V2 — services and pricing are still
- * imported from `content/services.ts` and `content/pricing.ts` — but written
- * for the spatial, systems-diagram register the concept runs in.
+ * Copy for the V3 cinematic concept. V1 content stays untouched in
+ * `content/site.ts` and `content/services.ts`; pricing is shared from
+ * `content/services.ts` so both concepts quote identical numbers.
  */
 
 export const v3Site = {
+  name: "YinTech",
   base: "/v3",
   nav: [
-    { label: "Systems", href: "/v3#systems" },
-    { label: "Architecture", href: "/v3#architecture" },
-    { label: "Automation OS", href: "/v3#os" },
-    { label: "Process", href: "/v3#process" },
+    { label: "Services", href: "/v3/services" },
+    { label: "Automation OS", href: "/v3/automation-os" },
+    { label: "How It Works", href: "/v3/how-it-works" },
+    { label: "About", href: "/v3/about" },
   ],
-  cta: { label: "Request Access", href: "/v3#contact" },
+  cta: { label: "Book an Audit", href: "/v3/contact" },
 };
 
-export const v3Hero = {
-  eyebrow: "AI Automation · Business Systems",
-  title: "Your operation,",
-  titleAccent: "rendered as a system.",
-  body: "YinTech maps how your business actually runs, then builds the connected system that runs it — capture, qualification, records, follow-up, and visibility on one foundation.",
-  primary: { label: "Book an Automation Audit", href: "/v3#contact" },
-  secondary: { label: "Explore the architecture", href: "/v3#architecture" },
+export const heroCopy = {
+  eyebrow: "AI + Automation + Business Systems",
+  title: "Build a smarter way to run your business.",
+  body: "YinTech designs practical AI automation and custom business systems around the way your company actually works.",
+  primary: { label: "Book an Automation Audit", href: "/v3/contact" },
+  secondary: { label: "Explore Automation OS", href: "/v3/automation-os" },
 };
 
-/** Nodes on the flight path through the architecture scene. */
-export const v3Nodes = [
+export const painPoints = [
+  "Leads slipping through the cracks",
+  "Repetitive admin work",
+  "Disconnected customer information",
+  "Slow quoting and reporting",
+];
+
+export const buildChapters = [
   {
-    id: "capture",
-    index: "01",
-    label: "Capture",
-    detail: "Form, inbox, and chat arrive as one structured record instead of three inboxes.",
-    metric: "128",
-    metricLabel: "leads / week",
+    id: "lead-sales",
+    title: "Lead & Sales Automation",
+    body: "Every inquiry is captured, qualified against your criteria, and routed to the right owner with follow-up already scheduled.",
+    href: "/v3/services#sales-leads",
   },
   {
-    id: "qualify",
-    index: "02",
-    label: "Qualification",
-    detail: "Your criteria applied to every enquiry, with the score and the reasoning both visible.",
-    metric: "87",
-    metricLabel: "avg score",
-  },
-  {
-    id: "records",
-    index: "03",
-    label: "Records",
-    detail: "One customer record with owner, stage, activity, and documents attached to it.",
-    metric: "318",
-    metricLabel: "active records",
-  },
-  {
-    id: "follow-up",
-    index: "04",
-    label: "Follow-Up",
-    detail: "Sequences that run on schedule and stop the moment a person replies.",
-    metric: "6m",
-    metricLabel: "response time",
-  },
-  {
-    id: "visibility",
-    index: "05",
-    label: "Visibility",
-    detail: "Pipeline, response time, and workload for whoever runs the operation.",
-    metric: "100%",
-    metricLabel: "on schedule",
+    id: "crm-systems",
+    title: "CRM & Business Systems",
+    body: "One record for every customer: activity, status, documents, and the operating numbers your team reviews each week.",
+    href: "/v3/services#systems",
   },
 ];
 
-export const v3Systems = [
-  {
-    id: "sales",
-    label: "Sales & Lead Automation",
-    body: "Qualification, parsing, follow-up, and reactivation running as one path from first enquiry to owned opportunity.",
-    items: ["AI Lead Qualifier", "Email & Chat Parsing", "Automated Follow-Up", "Lead Reactivation"],
-  },
-  {
-    id: "operations",
-    label: "Quotes & Operations",
-    body: "The document and approval work that quietly consumes a week: quoting, proposals, routing, reporting, compliance, stock.",
-    items: ["Quote Generator", "Proposal Builder", "Approval Routing", "Automated Reporting"],
-  },
-  {
-    id: "systems",
-    label: "CRM & Internal Systems",
-    body: "One workspace for customer records, operating numbers, company knowledge, and the people outside your team.",
-    items: ["CRM Center", "Executive Dashboard", "Company Knowledge AI", "Portals & Internal Apps"],
-  },
-  {
-    id: "web",
-    label: "Websites & Digital Systems",
-    body: "A public front door wired into the same workflow as everything else, instead of a form emailed to an inbox.",
-    items: ["Custom Website", "Advanced Website", "Lead Capture", "CRM Sync"],
-  },
+export const buildLinks = [
+  { title: "Quotes & Proposals", body: "Consistent documents from structured customer data.", href: "/v3/services#operations" },
+  { title: "Internal Business Apps", body: "Purpose-built tools that replace fragile spreadsheets.", href: "/v3/services#systems" },
+  { title: "Knowledge & Reporting", body: "Answers and recurring reports without the file hunt.", href: "/v3/services#operations" },
+  { title: "Websites & Portals", body: "Public and internal front doors wired into the workflow.", href: "/v3/services#websites" },
 ];
 
-export const v3Process = [
-  { index: "01", label: "Audit", body: "A working session on the processes that consume the most time, and what they cost each week." },
-  { index: "02", label: "Map", body: "Your current process documented end to end, then redrawn as the system it should be." },
-  { index: "03", label: "Build", body: "Workflows, data structure, interface, and automations built against the approved map." },
-  { index: "04", label: "Operate", body: "Monitoring, fixes, and refinement as volume grows and the operation changes." },
+export const osModules = [
+  { id: "lead", label: "Lead", detail: "Capture" },
+  { id: "qualification", label: "AI Qualification", detail: "Score" },
+  { id: "crm", label: "CRM", detail: "Record" },
+  { id: "follow-up", label: "Follow-Up", detail: "Sequence" },
+  { id: "dashboard", label: "Dashboard", detail: "Visibility" },
+];
+
+export const processSteps = [
+  { number: "01", title: "Discover", body: "We learn how your business handles leads, customers, quoting, reporting, and internal process today." },
+  { number: "02", title: "Design", body: "We map the workflow and decide what should be automated before anything gets built." },
+  { number: "03", title: "Build", body: "YinTech builds the workflows, interface, data structure, and automations." },
+  { number: "04", title: "Improve", body: "We monitor the system, fix issues, and refine workflows as the business changes." },
+];
+
+export const howItWorksSteps = [
+  { number: "01", title: "Automation Audit", body: "A working session on the processes that consume the most time, and what they cost you each week." },
+  { number: "02", title: "System Map", body: "Your current process is documented end to end, then redrawn as the system it should be." },
+  { number: "03", title: "Proposal", body: "Scope, sequence, and fixed pricing. You see exactly what gets built and in what order." },
+  { number: "04", title: "Build", body: "Workflows, data structure, interface, and automations are built against the approved map." },
+  { number: "05", title: "Test", body: "Real records, real edge cases, and a review pass with the people who will use it daily." },
+  { number: "06", title: "Deploy", body: "The system goes live alongside your current process until the handover is clean." },
+  { number: "07", title: "Manage", body: "Monitoring, fixes, and refinement as volume grows and the operation changes." },
+];
+
+export const principles = [
+  { title: "Workflow first", body: "We study the operation before proposing software. The process decides the system, not the other way around." },
+  { title: "Human controlled", body: "Automation drafts, routes, and organizes. People keep the decisions that matter." },
+  { title: "Connected, not fragmented", body: "Each build shares the same data foundation instead of adding another disconnected tool." },
+  { title: "Built to expand", body: "Phase 1 systems are structured so deeper integrations can be added without a rebuild." },
 ];

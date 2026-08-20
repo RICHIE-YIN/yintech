@@ -515,38 +515,54 @@ test("V2 follows the cinematic blueprint", async () => {
   assert.doesNotMatch(contact, /server action|\/api\//i);
 });
 
-test("V3 ships as its own concept, sharing only content and the logo", async () => {
-  const [v3Layout, v3Home, chromeGate, engine, flight] = await Promise.all([
-    readFile(new URL("app/v3/layout.tsx", root), "utf8"),
-    readFile(new URL("app/v3/page.tsx", root), "utf8"),
-    readFile(new URL("components/chrome-gate.tsx", root), "utf8"),
-    readFile(new URL("components/v3/engine.ts", root), "utf8"),
-    readFile(new URL("components/v3/system-flight.tsx", root), "utf8"),
-  ]);
+test("V3 is the V2 design plus scroll-driven scene mechanics", async () => {
+  const [v3Layout, v3Home, v3HowItWorks, scene, sticky, css, showcase] =
+    await Promise.all([
+      readFile(new URL("app/v3/layout.tsx", root), "utf8"),
+      readFile(new URL("app/v3/page.tsx", root), "utf8"),
+      readFile(new URL("app/v3/how-it-works/page.tsx", root), "utf8"),
+      readFile(new URL("components/v3/scroll-scene.tsx", root), "utf8"),
+      readFile(new URL("components/v3/sticky-scene.tsx", root), "utf8"),
+      readFile(new URL("app/v3/v3.css", root), "utf8"),
+      readFile(new URL("components/v3/showcase.tsx", root), "utf8"),
+    ]);
 
-  // Its own shell and stylesheet, and V1 chrome stays off it.
+  // Own shell and stylesheet; nothing imported from V2.
   assert.match(v3Layout, /import "\.\/v3\.css"/);
   assert.match(v3Layout, /<V3Nav \/>/);
-  assert.match(chromeGate, /"\/v3"/);
+  for (const file of [v3Layout, v3Home, v3HowItWorks]) {
+    assert.doesNotMatch(file, /components\/v2\//);
+    assert.doesNotMatch(file, /@\/content\/v2/);
+  }
 
-  // No V2 styling or components leak into V3.
-  assert.doesNotMatch(v3Home, /components\/v2\//);
-  assert.doesNotMatch(v3Layout, /v2\.css/);
+  // Showcase renders are shared with V2 rather than duplicated on disk.
+  assert.match(showcase, /ASSET_DIR = "v2-assets"/);
 
-  // Business facts stay shared rather than duplicated.
-  assert.match(v3Home, /@\/content\/pricing/);
+  // Scroll progress is published to CSS, not held in React state.
+  assert.match(scene, /--scene-p/);
+  assert.match(scene, /--scene-peak/);
+  assert.match(scene, /prefers-reduced-motion/);
 
-  // 3D is hand-rolled, not a framework import.
-  assert.match(engine, /export function project/);
-  assert.doesNotMatch(engine, /from "three"/);
+  // Stages recede once the camera has passed them.
+  assert.match(sticky, /data-passed=/);
+  assert.match(css, /\.v3-scene-frame\[data-passed\]/);
 
-  // The flight scene stays readable when canvas cannot run.
-  assert.match(flight, /v3-flight-fallback/);
-  assert.match(flight, /prefers-reduced-motion/);
+  // The Automation OS headline swells while pinned, then settles.
+  assert.match(v3Home, /v3-os-headline-scene/);
+  assert.match(css, /scale\(calc\(1 \+ 0\.62 \* var\(--scene-peak, 0\)\)\)/);
+
+  // Console and pricing share a scene so one reacts to the other arriving.
+  assert.match(v3Home, /v3-os-stack/);
+  assert.match(css, /\.v3-os-stack \.v3-os-console/);
+
+  // Both step lists get the scroll-drawn spine.
+  assert.match(v3Home, /v3-steps-scene/);
+  assert.match(v3HowItWorks, /v3-steps-scene/);
+  assert.match(css, /height: calc\(var\(--scene-p, 0\) \* 100%\)/);
 
   await Promise.all(
-    ["app/v3/v3.css", "components/v3/lattice-field.tsx"].map((file) =>
-      access(new URL(file, root)),
+    ["app/v3/services/page.tsx", "app/v3/about/page.tsx", "app/v3/contact/page.tsx"].map(
+      (file) => access(new URL(file, root)),
     ),
   );
 });
