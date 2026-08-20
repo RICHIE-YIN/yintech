@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 export const SHOWCASE = {
   hero: "hero-system-showcase",
   heroBackdrop: "hero-backdrop",
+  pageBackdrop: "page-backdrop",
   salesAutomation: "services-sales-automation-showcase",
   quotesOperations: "services-quotes-operations-showcase",
   crmSystems: "services-crm-systems-showcase",
@@ -120,5 +121,29 @@ export function ShowcaseBand({
         </div>
       </div>
     </section>
+  );
+}
+
+/**
+ * Atmosphere for the inner page heroes. Deliberately quieter than the
+ * homepage: same world, heavier scrim, no embossed mark — the homepage keeps
+ * that as its arrival moment.
+ */
+export function PageHeroBackdrop() {
+  const asset = resolveShowcase(SHOWCASE.pageBackdrop);
+  if (!asset) return null;
+
+  return (
+    <div aria-hidden="true" className="v2-page-backdrop">
+      <Image
+        alt=""
+        className="v2-page-backdrop-image"
+        fill
+        priority
+        sizes="100vw"
+        src={asset.src}
+      />
+      <span className="v2-page-backdrop-scrim" />
+    </div>
   );
 }

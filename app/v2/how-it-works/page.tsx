@@ -7,7 +7,7 @@ import {
 } from "@/components/v2/scenes";
 import { SHOWCASE, ShowcaseBand } from "@/components/v2/showcase";
 import { StickyScene } from "@/components/v2/sticky-scene";
-import { V2Button, V2Section } from "@/components/v2/ui";
+import { V2Button, V2PageHero, V2Section } from "@/components/v2/ui";
 import { howItWorksSteps } from "@/content/v2";
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default function V2HowItWorks() {
   return (
     <>
-      <V2Section className="v2-page-hero">
+      <V2PageHero>
         <p className="v2-eyebrow" data-enter="1">
           How It Works
         </p>
@@ -32,7 +32,7 @@ export default function V2HowItWorks() {
         <div className="v2-button-row" data-enter="5">
           <V2Button href="/v2/contact">Start with the audit</V2Button>
         </div>
-      </V2Section>
+      </V2PageHero>
 
       <ShowcaseBand
         alt="A seven-step delivery map — Automation Audit, System Map, Proposal, Build, Test, Deploy, Manage — with a continuous improvement loop returning from the last step to the second."

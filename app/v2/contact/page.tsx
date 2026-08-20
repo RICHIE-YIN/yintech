@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { V2Section } from "@/components/v2/ui";
+import { V2PageHero, V2Section } from "@/components/v2/ui";
 import { auditServices, site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -31,7 +31,7 @@ export default function V2Contact() {
 
   return (
     <>
-      <V2Section className="v2-page-hero">
+      <V2PageHero>
         <p className="v2-eyebrow" data-enter="1">
           Automation Audit
         </p>
@@ -43,7 +43,7 @@ export default function V2Contact() {
           in touch, so the first conversation is about your workflow rather than
           our services.
         </p>
-      </V2Section>
+      </V2PageHero>
 
       <V2Section className="v2-form-section">
         <form action={formEndpoint} className="v2-form" method="post">

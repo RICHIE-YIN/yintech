@@ -21,7 +21,7 @@ import {
 } from "@/components/v2/scenes";
 import { SHOWCASE, ShowcaseBand, type ShowcaseName } from "@/components/v2/showcase";
 import { StickyScene } from "@/components/v2/sticky-scene";
-import { V2Button, V2Section } from "@/components/v2/ui";
+import { V2Button, V2PageHero, V2Section } from "@/components/v2/ui";
 import { money } from "@/content/pricing";
 import { serviceCategories, type Service } from "@/content/services";
 
@@ -105,7 +105,7 @@ function ServicePricing({ service }: { service: Service }) {
 export default function V2Services() {
   return (
     <>
-      <V2Section className="v2-page-hero">
+      <V2PageHero>
         <p className="v2-eyebrow" data-enter="1">
           Services
         </p>
@@ -123,7 +123,7 @@ export default function V2Services() {
             Explore Automation OS
           </V2Button>
         </div>
-      </V2Section>
+      </V2PageHero>
 
       {serviceCategories.map((category, index) => (
         <div key={category.id}>

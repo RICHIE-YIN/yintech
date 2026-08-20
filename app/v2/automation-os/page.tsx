@@ -10,7 +10,7 @@ import {
 } from "@/components/v2/scenes";
 import { SHOWCASE, Showcase } from "@/components/v2/showcase";
 import { StickyScene } from "@/components/v2/sticky-scene";
-import { V2Button, V2Section } from "@/components/v2/ui";
+import { V2Button, V2PageHero, V2Section } from "@/components/v2/ui";
 import { automationOsPricing, money } from "@/content/pricing";
 import { osModules } from "@/content/v2";
 
@@ -30,7 +30,7 @@ const included = [
 export default function V2AutomationOs() {
   return (
     <>
-      <V2Section className="v2-page-hero" width="wide">
+      <V2PageHero width="wide">
         <div className="v2-os-hero">
           <div className="v2-os-hero-copy">
             <p className="v2-eyebrow" data-enter="1">
@@ -60,7 +60,7 @@ export default function V2AutomationOs() {
             />
           </div>
         </div>
-      </V2Section>
+      </V2PageHero>
 
       <V2Section className="v2-os" width="wide">
         <div className="v2-section-head v2-centered-head" data-reveal>

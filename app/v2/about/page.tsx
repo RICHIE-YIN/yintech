@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ManualProcessVisual, ManagedVisual } from "@/components/v2/scenes";
 import { SHOWCASE, Showcase } from "@/components/v2/showcase";
-import { V2Button, V2Section } from "@/components/v2/ui";
+import { V2Button, V2PageHero, V2Section } from "@/components/v2/ui";
 import { principles } from "@/content/v2";
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function V2About() {
   return (
     <>
-      <V2Section className="v2-page-hero">
+      <V2PageHero>
         <p className="v2-eyebrow" data-enter="1">
           About YinTech
         </p>
@@ -24,7 +24,7 @@ export default function V2About() {
           starts from the opposite direction: understand the operation first,
           then build only what removes friction from it.
         </p>
-      </V2Section>
+      </V2PageHero>
 
       <V2Section className="v2-manifesto">
         <div className="v2-manifesto-inner" data-reveal>

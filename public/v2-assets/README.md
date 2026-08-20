@@ -28,9 +28,26 @@ delivery. The 1536x1024 PNGs in this directory are served as ~86KB WebP.
 | `services-websites-showcase`           | Services chapter 04 anchor                            | *nothing — band is hidden*    |
 | `about-workflow-philosophy-showcase`   | About page split visual                               | Coded current-process UI      |
 | `how-it-works-system-map-showcase`     | How It Works anchor band                              | *nothing — band is hidden*    |
+| `hero-backdrop`                        | Homepage hero, full-bleed behind the copy             | Motif + grid, no photograph   |
+| `page-backdrop`                        | Shared across all five inner page heroes              | Flat black hero, as before    |
 
 The per-service sticky states on the Services page stay coded on purpose —
 they change as you scroll, which an image cannot do.
+
+## Backdrops
+
+`hero-backdrop` and `page-backdrop` are atmosphere, not content: they sit
+full-bleed behind hero copy under a scrim that guarantees text contrast
+regardless of the artwork. Keep the left 40% of the frame close to empty —
+that is where the headline sits — and keep them dark enough that nothing in
+the image competes with the type.
+
+The homepage backdrop is the loud one and carries the embossed mark. The
+shared inner-page backdrop should be the same architectural world, quieter,
+and without the mark, so the homepage keeps its arrival moment.
+
+Both should be at least 2560px wide: they render full-bleed, so on a retina
+display a narrower source visibly softens.
 
 ## Style direction
 

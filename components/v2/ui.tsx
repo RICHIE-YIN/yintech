@@ -1,5 +1,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import {
+  PageHeroBackdrop,
+  SHOWCASE,
+  hasShowcase,
+} from "@/components/v2/showcase";
 import { cn } from "@/lib/utils";
 import { v2Site } from "@/content/v2";
 
@@ -34,6 +39,29 @@ export function V2Section({
 }) {
   return (
     <section className={cn("v2-section", className)} id={id}>
+      <div className="v2-container" data-width={width}>
+        {children}
+      </div>
+    </section>
+  );
+}
+
+/** Inner-page hero. Picks up the shared backdrop once that asset exists. */
+export function V2PageHero({
+  children,
+  width = "standard",
+}: {
+  children: ReactNode;
+  width?: "standard" | "wide";
+}) {
+  const backdrop = hasShowcase(SHOWCASE.pageBackdrop);
+
+  return (
+    <section
+      className="v2-section v2-page-hero"
+      data-backdrop={backdrop || undefined}
+    >
+      <PageHeroBackdrop />
       <div className="v2-container" data-width={width}>
         {children}
       </div>

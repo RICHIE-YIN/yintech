@@ -2434,3 +2434,48 @@ html[data-yt-intro="skipping"] .v2-intro-logo {
   }
 }
 
+
+/* --------------------------- inner page backdrops ------------------------- */
+
+/*
+ * Same world as the homepage, deliberately quieter: the arrival moment should
+ * stay the loudest thing on the site.
+ */
+.v2-page-hero[data-backdrop] {
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+  padding-top: clamp(88px, 15vh, 168px);
+  padding-bottom: clamp(72px, 11vh, 132px);
+}
+
+.v2-page-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.v2-page-backdrop-image {
+  object-fit: cover;
+  object-position: 68% center;
+}
+
+.v2-page-backdrop-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, var(--yt-black) 0%, rgba(8, 8, 8, 0.9) 42%, rgba(8, 8, 8, 0.62) 78%, rgba(8, 8, 8, 0.5) 100%),
+    linear-gradient(180deg, rgba(8, 8, 8, 0.7) 0%, transparent 30%, rgba(8, 8, 8, 0.85) 82%, var(--yt-black) 100%);
+}
+
+@media (max-width: 900px) {
+  .v2-page-backdrop-scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(8, 8, 8, 0.88) 0%,
+      rgba(8, 8, 8, 0.8) 50%,
+      var(--yt-black) 100%
+    );
+  }
+}
