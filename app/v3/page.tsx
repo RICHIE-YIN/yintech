@@ -215,21 +215,26 @@ export default function V3Home() {
 
       {/* Scene 5 — Automation OS */}
       <V3Section className="v3-os" width="wide">
-        <ScrollScene className="v3-os-headline-scene" mode="pin" snap>
-          <div className="v3-os-headline-pin">
-            <div className="v3-os-head">
-              <p className="v3-eyebrow">YinTech Automation OS</p>
-              <h2 className="v3-display v3-os-headline">
-                Five connected systems. One automated sales operation.
-              </h2>
-              <p className="v3-lede">
-                Instead of buying isolated automations, Automation OS connects
-                lead intake, qualification, CRM, follow-up, and management
-                visibility on one shared foundation.
-              </p>
-            </div>
+        <div className="v3-os-headline-block">
+          <div aria-hidden="true" className="v3-os-aura">
+            <span className="v3-os-aura-mark" />
+            <span className="v3-os-aura-bokeh" data-orb="1" />
+            <span className="v3-os-aura-bokeh" data-orb="2" />
+            <span className="v3-os-aura-bokeh" data-orb="3" />
+            <span className="v3-os-aura-bokeh" data-orb="4" />
           </div>
-        </ScrollScene>
+          <div className="v3-os-head" data-reveal>
+            <p className="v3-eyebrow">YinTech Automation OS</p>
+            <h2 className="v3-display">
+              Five connected systems. One automated sales operation.
+            </h2>
+            <p className="v3-lede">
+              Instead of buying isolated automations, Automation OS connects
+              lead intake, qualification, CRM, follow-up, and management
+              visibility on one shared foundation.
+            </p>
+          </div>
+        </div>
 
         <ol className="v3-modules" data-reveal>
           {osModules.map((module) => (

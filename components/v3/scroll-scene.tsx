@@ -22,15 +22,12 @@ export function ScrollScene({
   className,
   id,
   mode = "enter",
-  snap = false,
 }: {
   as?: "div" | "section";
   children: ReactNode;
   className?: string;
   id?: string;
   mode?: Mode;
-  /** Adds snap points at the start and end of a pinned scene. */
-  snap?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -101,12 +98,6 @@ export function ScrollScene({
 
   return (
     <Tag className={className} data-scene={mode} id={id} ref={ref}>
-      {snap ? (
-        <div aria-hidden="true" className="v3-scene-snaps">
-          <span data-at="start" />
-          <span data-at="end" />
-        </div>
-      ) : null}
       {children}
     </Tag>
   );

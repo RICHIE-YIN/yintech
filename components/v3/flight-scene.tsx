@@ -10,16 +10,11 @@ export type FlightStep = {
   visual: ReactNode;
 };
 
-/** How far apart stages sit in depth. Higher = stronger zoom between them. */
-const DEPTH = 0.62;
-
 /**
- * A continuous camera dolly through a stack of stages. Scroll moves a camera
- * along Z: the stage ahead grows from far away until it fills the frame, then
- * scales past the viewer and blurs out as the next one arrives behind it.
- *
- * Every frame is scroll-linked rather than a state crossfade, so the motion
- * never snaps between stages — that continuity is the whole effect.
+ * A stack of stages advanced one at a time. Scroll only decides *which* stage
+ * is current; the move itself is a fixed-duration CSS transition, so a flick
+ * lands on the next stage at the same speed however slowly you scrolled.
+ * Interpolating against scroll position made the change feel like a drag.
  */
 export function FlightScene({
   body,
@@ -42,14 +37,11 @@ export function FlightScene({
   titleTag?: "h2" | "h3";
 }) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const stageRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [active, setActive] = useState(0);
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
-
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     /*
      * Product windows are content-sized and taller than the row they get on
@@ -85,50 +77,9 @@ export function FlightScene({
             ? 1
             : 0;
 
-      // Camera position, measured in stages. Published so CSS (and tests)
-      // can see the live value.
       section.style.setProperty("--flight-p", progress.toFixed(4));
-      const camera = progress * (steps.length - 1);
-      const nearest = Math.round(camera);
-
-      for (let i = 0; i < steps.length; i += 1) {
-        const stage = stageRefs.current[i];
-        // Distance ahead of the camera: 0 is filling the frame.
-        const d = i - camera;
-
-        let scale: number;
-        let opacity: number;
-        let blur: number;
-
-        if (reduced.matches) {
-          scale = 1;
-          blur = 0;
-          opacity = i === nearest ? 1 : 0;
-        } else if (d >= 0) {
-          // Approaching: small and soft, resolving as it nears.
-          scale = 1 / (1 + d * DEPTH);
-          /*
-           * Reaches zero exactly at the halfway point between stages: no two
-           * stages are ever legible together (the overlap that read as
-           * ghosting), and the handoff still has no blank frame in it.
-           */
-          opacity = Math.min(1, Math.max(0, 1 - d * 2));
-          blur = Math.min(d * 9, 16);
-        } else {
-          // Passing the viewer: blows past the frame and dissolves.
-          scale = 1 + -d * 0.9;
-          opacity = Math.min(1, Math.max(0, 1 + d * 2));
-          blur = Math.min(-d * 18, 20);
-        }
-
-        if (stage) {
-          stage.style.opacity = opacity.toFixed(3);
-          stage.style.transform = `scale(${scale.toFixed(4)})`;
-          stage.style.filter = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : "";
-          stage.style.zIndex = String(200 - Math.round(Math.abs(d) * 10));
-          stage.style.pointerEvents = Math.abs(d) < 0.5 ? "auto" : "none";
-        }
-      }
+      // Nearest stage wins outright — no partial states between them.
+      const nearest = Math.round(progress * (steps.length - 1));
 
       if (nearest !== activeIndex) {
         activeIndex = nearest;
@@ -198,11 +149,14 @@ export function FlightScene({
             {steps.map((step, index) => (
               <div
                 className="v3-flight-stage"
-                data-active={index === active || undefined}
+                data-state={
+                  index === active
+                    ? "active"
+                    : index < active
+                      ? "passed"
+                      : "ahead"
+                }
                 key={step.id}
-                ref={(node) => {
-                  stageRefs.current[index] = node;
-                }}
               >
                 <div className="v3-flight-step">
                   {numbered ? (

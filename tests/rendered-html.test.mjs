@@ -543,15 +543,20 @@ test("V3 is the V2 design plus scroll-driven scene mechanics", async () => {
   assert.match(scene, /--scene-peak/);
   assert.match(scene, /prefers-reduced-motion/);
 
-  // Stages are driven by a continuous camera, not a state crossfade.
-  assert.match(flight, /const camera = progress \* \(steps\.length - 1\)/);
-  assert.match(flight, /scale = 1 \/ \(1 \+ d \* DEPTH\)/);
-  assert.match(flight, /scale = 1 \+ -d \* 0\.9/);
-  assert.match(css, /\.v3-flight-stage/);
+  // Stage changes are discrete: scroll picks the stage, CSS runs the move at
+  // a fixed duration so it never feels dragged along with the scroll.
+  assert.match(flight, /Math\.round\(progress \* \(steps\.length - 1\)\)/);
+  assert.match(flight, /data-state=/);
+  assert.doesNotMatch(flight, /style\.transform = `scale/);
+  assert.match(css, /\.v3-flight-stage\[data-state="active"\]/);
+  assert.match(css, /\.v3-flight-stage\[data-state="passed"\]/);
+  assert.match(css, /\.v3-flight-stage\[data-state="ahead"\]/);
 
-  // The Automation OS headline swells while pinned, then settles.
-  assert.match(v3Home, /v3-os-headline-scene/);
-  assert.match(css, /scale\(calc\(1 \+ [0-9.]+ \* var\(--scene-peak, 0\)\)\)/);
+  // The Automation OS headline is static now, backed by the mark and bokeh.
+  assert.doesNotMatch(v3Home, /v3-os-headline-scene/);
+  assert.match(v3Home, /v3-os-aura/);
+  assert.match(css, /\.v3-os-aura-mark[\s\S]*yintech-motif\.svg/);
+  assert.match(css, /\.v3-os-aura-bokeh/);
 
   // Console and pricing share a scene so one reacts to the other arriving.
   assert.match(v3Home, /v3-os-stack/);
