@@ -451,13 +451,13 @@ test("V2 concept ships alongside V1 without replacing it", async () => {
   const [layout, v2Layout, chromeGate, v1Home] = await Promise.all([
     readFile(new URL("app/layout.tsx", root), "utf8"),
     readFile(new URL("app/v2/layout.tsx", root), "utf8"),
-    readFile(new URL("components/v2/chrome-gate.tsx", root), "utf8"),
+    readFile(new URL("components/chrome-gate.tsx", root), "utf8"),
     readFile(new URL("app/page.tsx", root), "utf8"),
   ]);
 
   // V1 keeps its own chrome; only /v2 opts out of it.
   assert.match(layout, /<ChromeGate footer=\{<Footer \/>\} header=\{<Navbar \/>\}>/);
-  assert.match(chromeGate, /pathname\?\.startsWith\("\/v2\/"\)/);
+  assert.match(chromeGate, /SELF_CHROMED = \["\/v2", "\/v3"\]/);
   assert.match(v1Home, /<Section className="hero">/);
 
   // V2 owns its own shell, styles, and brand moment.
@@ -513,4 +513,40 @@ test("V2 follows the cinematic blueprint", async () => {
   // Static prototype: the form still posts to the shared endpoint.
   assert.match(contact, /NEXT_PUBLIC_FORM_ENDPOINT/);
   assert.doesNotMatch(contact, /server action|\/api\//i);
+});
+
+test("V3 ships as its own concept, sharing only content and the logo", async () => {
+  const [v3Layout, v3Home, chromeGate, engine, flight] = await Promise.all([
+    readFile(new URL("app/v3/layout.tsx", root), "utf8"),
+    readFile(new URL("app/v3/page.tsx", root), "utf8"),
+    readFile(new URL("components/chrome-gate.tsx", root), "utf8"),
+    readFile(new URL("components/v3/engine.ts", root), "utf8"),
+    readFile(new URL("components/v3/system-flight.tsx", root), "utf8"),
+  ]);
+
+  // Its own shell and stylesheet, and V1 chrome stays off it.
+  assert.match(v3Layout, /import "\.\/v3\.css"/);
+  assert.match(v3Layout, /<V3Nav \/>/);
+  assert.match(chromeGate, /"\/v3"/);
+
+  // No V2 styling or components leak into V3.
+  assert.doesNotMatch(v3Home, /components\/v2\//);
+  assert.doesNotMatch(v3Layout, /v2\.css/);
+
+  // Business facts stay shared rather than duplicated.
+  assert.match(v3Home, /@\/content\/pricing/);
+
+  // 3D is hand-rolled, not a framework import.
+  assert.match(engine, /export function project/);
+  assert.doesNotMatch(engine, /from "three"/);
+
+  // The flight scene stays readable when canvas cannot run.
+  assert.match(flight, /v3-flight-fallback/);
+  assert.match(flight, /prefers-reduced-motion/);
+
+  await Promise.all(
+    ["app/v3/v3.css", "components/v3/lattice-field.tsx"].map((file) =>
+      access(new URL(file, root)),
+    ),
+  );
 });

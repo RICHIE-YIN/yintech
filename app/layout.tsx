@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ChromeGate } from "@/components/v2/chrome-gate";
+import { ChromeGate } from "@/components/chrome-gate";
 import { Footer, Navbar } from "@/components/ui";
 import { site } from "@/content/site";
 import "./globals.css";

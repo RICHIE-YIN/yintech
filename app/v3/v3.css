@@ -1,0 +1,723 @@
+/* ==========================================================================
+   YinTech V3 — spatial concept
+   Scoped under `.v3`. Shares nothing with V1 or V2 beyond the logo asset and
+   the business facts in /content.
+   ========================================================================== */
+
+.v3 {
+  --v3-void: #05070c;
+  --v3-deep: #080b12;
+  --v3-panel: rgba(255, 255, 255, 0.035);
+  --v3-panel-strong: rgba(255, 255, 255, 0.06);
+  --v3-line: rgba(140, 170, 214, 0.16);
+  --v3-line-strong: rgba(140, 170, 214, 0.3);
+
+  --v3-text: #e6edf7;
+  --v3-muted: #93a3ba;
+  --v3-faint: #64738a;
+
+  --v3-blue: #2f7df6;
+  --v3-blue-deep: #2569d8;
+  --v3-ice: #7fd8ff;
+
+  --v3-gap: clamp(96px, 12vw, 176px);
+  --v3-ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  background: var(--v3-void);
+  color: var(--v3-text);
+  font-family: var(--font-geist-sans), Inter, system-ui, sans-serif;
+  font-size: 16.5px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+.v3 :where(h1, h2, h3, p, ol, ul, figure) {
+  margin: 0;
+}
+
+.v3 :where(ol, ul) {
+  padding: 0;
+  list-style: none;
+}
+
+.v3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.v3 :focus-visible {
+  outline: 2px solid var(--v3-ice);
+  outline-offset: 3px;
+}
+
+.v3-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Faint atmospheric wash; keeps the void from reading as flat black. */
+.v3-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(47, 125, 246, 0.09), transparent 60%),
+    radial-gradient(90% 60% at 100% 100%, rgba(127, 216, 255, 0.05), transparent 62%);
+}
+
+.v3-main,
+.v3-header,
+.v3-footer {
+  position: relative;
+  z-index: 1;
+}
+
+.v3-container {
+  width: min(1320px, calc(100% - 40px));
+  margin-inline: auto;
+}
+
+.v3-section {
+  padding-block: var(--v3-gap);
+}
+
+/* ------------------------------- typography ------------------------------- */
+
+/*
+ * V3 sets display type in the mono face. It reads as instrumentation rather
+ * than editorial, which is the whole difference in register from V2.
+ */
+.v3-eyebrow {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--v3-ice);
+}
+
+.v3-hero-title {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: clamp(2.4rem, 5.6vw, 5rem);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+.v3-section-title {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: clamp(1.9rem, 3.4vw, 3rem);
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+.v3-accent {
+  color: var(--v3-blue);
+}
+
+.v3 p {
+  color: var(--v3-muted);
+}
+
+.v3-section-head {
+  display: grid;
+  gap: 14px;
+  margin-bottom: clamp(40px, 5vw, 72px);
+  max-width: 60ch;
+}
+
+/* --------------------------------- buttons -------------------------------- */
+
+.v3-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding-inline: 22px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  border: 1px solid var(--v3-line-strong);
+  /* Cut corner — the HUD detail that ties the buttons to the geometry. */
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  transition: background 0.25s var(--v3-ease), border-color 0.25s var(--v3-ease),
+    color 0.25s var(--v3-ease);
+}
+
+.v3 .v3-button-primary {
+  background: var(--v3-blue-deep);
+  border-color: var(--v3-blue);
+  color: #ffffff;
+}
+
+.v3 .v3-button-primary:hover {
+  background: var(--v3-blue);
+}
+
+.v3 .v3-button-ghost {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--v3-text);
+}
+
+.v3 .v3-button-ghost:hover {
+  border-color: var(--v3-ice);
+  color: var(--v3-ice);
+}
+
+.v3-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* --------------------------------- header --------------------------------- */
+
+.v3-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid transparent;
+  transition: background 0.3s var(--v3-ease), border-color 0.3s var(--v3-ease);
+}
+
+.v3-header[data-scrolled] {
+  background: rgba(5, 7, 12, 0.82);
+  backdrop-filter: blur(16px);
+  border-bottom-color: var(--v3-line);
+}
+
+.v3-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: min(1320px, calc(100% - 40px));
+  margin-inline: auto;
+  min-height: 68px;
+}
+
+.v3-brand img {
+  width: 34px;
+  height: auto;
+  object-fit: contain;
+}
+
+.v3-nav {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v3-faint);
+}
+
+.v3-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s var(--v3-ease);
+}
+
+.v3-nav a:hover {
+  color: var(--v3-text);
+}
+
+.v3-nav-dot {
+  width: 4px;
+  height: 4px;
+  background: var(--v3-line-strong);
+  transform: rotate(45deg);
+  transition: background 0.2s var(--v3-ease);
+}
+
+.v3-nav a:hover .v3-nav-dot {
+  background: var(--v3-ice);
+}
+
+/* ---------------------------------- hero ---------------------------------- */
+
+.v3-hero {
+  position: relative;
+  min-height: calc(100svh - 68px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.v3-lattice {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.v3-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(70% 60% at 26% 50%, rgba(5, 7, 12, 0.94) 0%, rgba(5, 7, 12, 0.6) 46%, transparent 76%),
+    linear-gradient(180deg, transparent 60%, var(--v3-void) 100%);
+}
+
+.v3-hero-inner {
+  position: relative;
+  display: grid;
+  gap: 24px;
+  justify-items: start;
+  padding-block: clamp(64px, 10vh, 120px);
+  max-width: 40rem;
+}
+
+.v3-hero-body {
+  max-width: 46ch;
+  font-size: 1.04rem;
+}
+
+.v3-hero-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 8px;
+  margin-top: 12px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--v3-faint);
+}
+
+.v3-hero-strip span {
+  padding: 5px 10px;
+  border: 1px solid var(--v3-line);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.v3-scroll-cue {
+  position: absolute;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v3-faint);
+}
+
+.v3 [data-enter] {
+  opacity: 0;
+  animation: v3-enter 700ms var(--v3-ease) both;
+  animation-delay: calc(var(--v3-step, 0) * 110ms);
+}
+
+.v3 [data-enter="1"] { --v3-step: 0; }
+.v3 [data-enter="2"] { --v3-step: 1; }
+.v3 [data-enter="3"] { --v3-step: 2; }
+.v3 [data-enter="4"] { --v3-step: 3; }
+.v3 [data-enter="5"] { --v3-step: 4; }
+
+@keyframes v3-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* ------------------------------ flight scene ------------------------------ */
+
+.v3-flight {
+  position: relative;
+  /* Length of the scroll determines how long the camera takes to traverse. */
+  min-height: 420vh;
+}
+
+.v3-flight-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.v3-flight-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.v3-flight-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.v3-flight-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  border: 1px solid var(--v3-line);
+  background: rgba(5, 7, 12, 0.7);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.v3-flight-label-index {
+  color: var(--v3-ice);
+}
+
+.v3-flight-readout {
+  position: absolute;
+  left: max(20px, calc(50% - 660px + 20px));
+  bottom: clamp(32px, 8vh, 84px);
+  display: grid;
+  gap: 12px;
+  max-width: 30rem;
+  padding: 22px 24px;
+  border: 1px solid var(--v3-line);
+  background: rgba(8, 11, 18, 0.72);
+  backdrop-filter: blur(14px);
+  clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+}
+
+.v3-flight-title {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+}
+
+.v3-flight-detail {
+  font-size: 0.95rem;
+  max-width: 42ch;
+}
+
+.v3-flight-metric {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+.v3-flight-metric strong {
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--v3-ice);
+  font-variant-numeric: tabular-nums;
+}
+
+.v3-flight-metric span {
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v3-faint);
+}
+
+.v3-flight-track {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.v3-flight-track li {
+  position: relative;
+  height: 2px;
+  flex: 1;
+  background: var(--v3-line);
+  transition: background 0.35s var(--v3-ease);
+}
+
+.v3-flight-track li[data-active] {
+  background: var(--v3-blue);
+}
+
+/* Readable without canvas, and the record for assistive tech. */
+.v3-flight-fallback {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* -------------------------------- panels ---------------------------------- */
+
+.v3-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  perspective: 1200px;
+}
+
+.v3-panel {
+  transition: transform 0.4s var(--v3-ease);
+  transform-style: preserve-3d;
+}
+
+.v3-panel-inner {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  height: 100%;
+  padding: clamp(24px, 2.6vw, 38px);
+  border: 1px solid var(--v3-line);
+  background:
+    radial-gradient(
+      420px circle at var(--glare-x, 50%) var(--glare-y, 0%),
+      rgba(127, 216, 255, 0.07),
+      transparent 60%
+    ),
+    var(--v3-panel);
+  clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+}
+
+.v3-panel-inner h3 {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 1.16rem;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+.v3-panel-inner p {
+  font-size: 0.95rem;
+  max-width: 46ch;
+}
+
+.v3-panel-inner ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.v3-panel-inner li {
+  padding: 5px 10px;
+  border: 1px solid var(--v3-line);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--v3-muted);
+}
+
+/* --------------------------------- OS band -------------------------------- */
+
+.v3-os {
+  border-block: 1px solid var(--v3-line);
+  background: linear-gradient(180deg, rgba(47, 125, 246, 0.05), transparent 60%);
+}
+
+.v3-os-head {
+  display: grid;
+  gap: 14px;
+  max-width: 46rem;
+  margin-bottom: clamp(48px, 6vw, 84px);
+}
+
+.v3-os-figures {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 48px);
+}
+
+.v3-os-figures > div {
+  display: grid;
+  gap: 8px;
+  padding-top: 22px;
+  border-top: 1px solid var(--v3-line);
+}
+
+.v3-os-figures strong {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.v3-os-figures span {
+  font-size: 0.92rem;
+  color: var(--v3-text);
+}
+
+.v3-os-figures em {
+  font-style: normal;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  color: var(--v3-faint);
+}
+
+.v3-os-figures > div[data-lead="true"] {
+  border-top-color: var(--v3-blue);
+}
+
+.v3-os-figures > div[data-lead="true"] strong {
+  color: var(--v3-blue);
+}
+
+/* --------------------------------- process -------------------------------- */
+
+.v3-process-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.v3-process-list li {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: 24px 20px 28px;
+  border: 1px solid var(--v3-line);
+  background: var(--v3-panel);
+}
+
+.v3-process-index {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--v3-ice);
+}
+
+.v3-process-list h3 {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.v3-process-list p {
+  font-size: 0.92rem;
+}
+
+/* --------------------------------- footer --------------------------------- */
+
+.v3-footer {
+  border-top: 1px solid var(--v3-line);
+  padding-block: clamp(72px, 10vw, 140px) 40px;
+}
+
+.v3-footer-main {
+  display: grid;
+  gap: 20px;
+  justify-items: start;
+  padding-bottom: clamp(48px, 6vw, 80px);
+}
+
+.v3-footer-title {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: clamp(1.8rem, 3.6vw, 3rem);
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+}
+
+.v3-footer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 26px;
+  border-top: 1px solid var(--v3-line);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--v3-faint);
+}
+
+.v3-footer-meta nav {
+  display: flex;
+  gap: 18px;
+}
+
+.v3-footer-meta a:hover {
+  color: var(--v3-ice);
+}
+
+/* -------------------------------- responsive ------------------------------ */
+
+@media (max-width: 900px) {
+  .v3-panel-grid,
+  .v3-process-list,
+  .v3-os-figures {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .v3-nav {
+    display: none;
+  }
+
+  .v3-flight {
+    min-height: 320vh;
+  }
+
+  .v3-flight-readout {
+    left: 20px;
+    right: 20px;
+    max-width: none;
+    padding: 18px 18px 20px;
+  }
+
+  .v3-flight-detail {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .v3-flight-label {
+    font-size: 0.6rem;
+    padding: 4px 8px;
+  }
+
+  .v3-hero-strip span {
+    font-size: 0.62rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v3 [data-enter] {
+    animation: none;
+    opacity: 1;
+  }
+
+  .v3-panel {
+    transition: none;
+  }
+}
