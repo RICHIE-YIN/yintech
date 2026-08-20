@@ -14,6 +14,11 @@ Two concepts live in this repo and deploy together:
 - **V1 (current design)** — routes at `/`, `/services`, `/automation-os`,
   `/how-it-works`, `/about`, `/contact`. Styles in `app/globals.css`,
   components in `components/ui.tsx`.
+- **V4 (current direction)** — routes under `/v4`. Its own stylesheet
+  (`app/v4/v4.css`), components in `components/v4/`, copy in `content/v4.ts`.
+  Includes the scope builder, which prices a selection from the same service
+  list the services page renders. Set `V4_INDEXABLE` in `content/v4.ts` to
+  true to put it in the sitemap and allow indexing.
 - **V2 (cinematic concept)** — routes under `/v2`. Styles in `app/v2/v2.css`
   (every rule scoped under `.v2`), components in `components/v2/`, copy in
   `content/v2.ts`. An experimental, product-led direction: session-scoped
@@ -48,10 +53,15 @@ http://localhost:3000/v2.
 Deploys to Vercel with the default Next.js settings — no build command or
 output directory overrides needed.
 
-Optional environment variable:
+Environment variables are documented in `.env.example`. The important one:
 
-- `NEXT_PUBLIC_FORM_ENDPOINT` — where the contact form posts. Falls back to
-  `/thank-you` when unset.
+- `NEXT_PUBLIC_FORM_ENDPOINT` — where the audit form delivers. **V4 hides the
+  form entirely until this is set**, because a form without a destination
+  accepts requests and loses them. V1–V3 fall back to `/thank-you`, which does
+  exactly that; treat those as concepts, not lead capture.
+
+Also generated automatically: `/sitemap.xml`, `/robots.txt`, the favicon
+(`app/icon.tsx`), and the social preview image (`app/opengraph-image.tsx`).
 
 ## Project Layout
 

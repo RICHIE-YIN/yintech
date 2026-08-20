@@ -577,3 +577,105 @@ test("V3 is the V2 design plus scroll-driven scene mechanics", async () => {
     ),
   );
 });
+
+test("Automation OS pricing claim matches the service list it bundles", async () => {
+  const [services, pricing, v4] = await Promise.all([
+    readFile(new URL("content/services.ts", root), "utf8"),
+    readFile(new URL("content/pricing.ts", root), "utf8"),
+    readFile(new URL("content/v4.ts", root), "utf8"),
+  ]);
+
+  // The five ids V4 treats as "what Automation OS replaces".
+  const bundle = [
+    ...v4.matchAll(/OS_BUNDLE_IDS = \[([\s\S]*?)\]/g),
+  ][0][1]
+    .split(",")
+    .map((entry) => entry.trim().replace(/"/g, ""))
+    .filter(Boolean);
+
+  assert.equal(bundle.length, 5);
+
+  // Pull each bundled service's own prices out of the catalogue.
+  const priceOf = (id) => {
+    const block = services.slice(services.indexOf(`id: "${id}"`));
+    const setup = block.match(/setupPrice: (\d+)/);
+    const monthly = block.match(/monthlyPrice: (\d+)/);
+    return { setup: Number(setup[1]), monthly: Number(monthly[1]) };
+  };
+
+  const summed = bundle.reduce(
+    (totals, id) => {
+      const price = priceOf(id);
+      return {
+        setup: totals.setup + price.setup,
+        monthly: totals.monthly + price.monthly,
+      };
+    },
+    { setup: 0, monthly: 0 },
+  );
+
+  const declared = {
+    setup: Number(pricing.match(/standaloneSetup: (\d+)/)[1]),
+    monthly: Number(pricing.match(/standaloneMonthly: (\d+)/)[1]),
+    saving: Number(pricing.match(/firstYearSavings: (\d+)/)[1]),
+    osSetup: Number(pricing.match(/osSetup: (\d+)/)[1]),
+    osMonthly: Number(pricing.match(/osMonthly: (\d+)/)[1]),
+  };
+
+  // If a service price changes, the published comparison has to move with it.
+  assert.equal(summed.setup, declared.setup);
+  assert.equal(summed.monthly, declared.monthly);
+
+  const standaloneYearOne = summed.setup + summed.monthly * 12;
+  const osYearOne = declared.osSetup + declared.osMonthly * 12;
+  assert.equal(standaloneYearOne - osYearOne, declared.saving);
+});
+
+test("V4 ships as a production-shaped site", async () => {
+  const [layout, home, contact, estimator, ui, css] = await Promise.all([
+    readFile(new URL("app/v4/layout.tsx", root), "utf8"),
+    readFile(new URL("app/v4/page.tsx", root), "utf8"),
+    readFile(new URL("app/v4/contact/page.tsx", root), "utf8"),
+    readFile(new URL("components/v4/estimator.tsx", root), "utf8"),
+    readFile(new URL("components/v4/ui.tsx", root), "utf8"),
+    readFile(new URL("app/v4/v4.css", root), "utf8"),
+  ]);
+
+  // Own shell, and nothing borrowed from the earlier concepts.
+  assert.match(layout, /import "\.\/v4\.css"/);
+  for (const file of [layout, home, contact]) {
+    assert.doesNotMatch(file, /components\/v[23]\//);
+    assert.doesNotMatch(file, /@\/content\/v[23]/);
+  }
+
+  // The builder derives from the catalogue rather than restating prices.
+  assert.match(estimator, /@\/content\/services/);
+  assert.match(estimator, /@\/content\/pricing/);
+  assert.doesNotMatch(estimator, /4900|1400|10800/);
+
+  // A form with no destination is never rendered.
+  assert.match(contact, /NEXT_PUBLIC_FORM_ENDPOINT/);
+  assert.match(contact, /v4-form-unwired/);
+
+  // One h1 per page: the page head opts in explicitly.
+  assert.match(ui, /level\?: 1 \| 2/);
+
+  // The base paragraph rule stays at element specificity so component colours
+  // are not silently overridden.
+  assert.match(css, /:where\(\.v4\) p \{/);
+  assert.doesNotMatch(css, /!important/);
+
+  await Promise.all(
+    [
+      "app/v4/services/page.tsx",
+      "app/v4/automation-os/page.tsx",
+      "app/v4/how-it-works/page.tsx",
+      "app/v4/about/page.tsx",
+      "app/sitemap.ts",
+      "app/robots.ts",
+      "app/icon.tsx",
+      "app/opengraph-image.tsx",
+      ".env.example",
+    ].map((file) => access(new URL(file, root))),
+  );
+});
