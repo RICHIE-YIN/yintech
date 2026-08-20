@@ -53,11 +53,10 @@ export default function V2AutomationOs() {
           </div>
           <div className="v2-os-hero-visual" data-enter="4">
             <Showcase
-              alt="Automation OS: five connected modules — Lead, AI Qualification, CRM, Follow-Up, and Dashboard — presented as one unified interface."
+              alt="Automation OS: five connected modules — Lead, AI Qualification, CRM, Follow-Up, and Dashboard — above a pipeline funnel, lead sources, performance over time, and a live activity feed."
               fallback={<OsConsole />}
               name={SHOWCASE.automationOs}
               priority
-              ratio="3 / 2"
             />
           </div>
         </div>

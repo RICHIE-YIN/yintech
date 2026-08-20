@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { readImageSize } from "@/lib/image-size";
 import { cn } from "@/lib/utils";
 
 /**
@@ -28,16 +29,23 @@ export type ShowcaseName = (typeof SHOWCASE)[keyof typeof SHOWCASE];
 const ASSET_DIR = "v2-assets";
 const EXTENSIONS = [".webp", ".png", ".jpg"] as const;
 
+export type ResolvedShowcase = { src: string; width: number; height: number };
+
 /**
  * Resolved at build time — every V2 route is statically prerendered, so this
- * never runs on a request.
+ * never runs on a request. Dimensions come from the file itself, so a frame
+ * always matches its asset and a replacement of any shape just fits.
  */
-export function resolveShowcase(name: ShowcaseName): string | null {
+export function resolveShowcase(name: ShowcaseName): ResolvedShowcase | null {
   for (const extension of EXTENSIONS) {
     const file = `${name}${extension}`;
-    if (existsSync(join(process.cwd(), "public", ASSET_DIR, file))) {
-      return `/${ASSET_DIR}/${file}`;
-    }
+    const path = join(process.cwd(), "public", ASSET_DIR, file);
+    if (!existsSync(path)) continue;
+
+    const size = readImageSize(path);
+    if (!size) continue;
+
+    return { src: `/${ASSET_DIR}/${file}`, ...size };
   }
   return null;
 }
@@ -52,7 +60,6 @@ export function Showcase({
   fallback = null,
   name,
   priority = false,
-  ratio = "3 / 2",
   sizes = "(max-width: 900px) 100vw, 62vw",
 }: {
   alt: string;
@@ -61,17 +68,16 @@ export function Showcase({
   fallback?: ReactNode;
   name: ShowcaseName;
   priority?: boolean;
-  ratio?: string;
   sizes?: string;
 }) {
-  const src = resolveShowcase(name);
+  const asset = resolveShowcase(name);
 
-  if (!src) return <>{fallback}</>;
+  if (!asset) return <>{fallback}</>;
 
   return (
     <figure
       className={cn("v2-showcase", className)}
-      style={{ aspectRatio: ratio }}
+      style={{ aspectRatio: `${asset.width} / ${asset.height}` }}
     >
       <Image
         alt={alt}
@@ -79,7 +85,7 @@ export function Showcase({
         fill
         priority={priority}
         sizes={sizes}
-        src={src}
+        src={asset.src}
       />
     </figure>
   );
@@ -95,13 +101,11 @@ export function ShowcaseBand({
   caption,
   eyebrow,
   name,
-  ratio = "3 / 2",
 }: {
   alt: string;
   caption?: string;
   eyebrow?: string;
   name: ShowcaseName;
-  ratio?: string;
 }) {
   if (!hasShowcase(name)) return null;
 
@@ -110,12 +114,7 @@ export function ShowcaseBand({
       <div className="v2-container" data-width="wide">
         <div className="v2-showcase-band-inner" data-reveal>
           {eyebrow ? <p className="v2-eyebrow">{eyebrow}</p> : null}
-          <Showcase
-            alt={alt}
-            name={name}
-            ratio={ratio}
-            sizes="(max-width: 900px) 100vw, 92vw"
-          />
+          <Showcase alt={alt} name={name} sizes="(max-width: 900px) 100vw, 92vw" />
           {caption ? <p className="v2-showcase-caption">{caption}</p> : null}
         </div>
       </div>

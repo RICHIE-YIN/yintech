@@ -46,11 +46,10 @@ export default function V2Home() {
           </div>
           <div className="v2-hero-visual" data-enter="4">
             <Showcase
-              alt="The YinTech Automation OS interface: lead intake, qualification score, CRM record, follow-up schedule, and dashboard visibility in one system."
+              alt="An inbound lead console: a scored list of new leads, a qualification score of 87 broken down by budget, authority, need, and timeline, and a follow-up sequence already scheduled."
               fallback={<HeroConsole />}
               name={SHOWCASE.hero}
               priority
-              ratio="3 / 2"
             />
           </div>
         </div>
@@ -102,7 +101,7 @@ export default function V2Home() {
               body: "Capture, qualification, records, follow-up, and reporting run as one system. Your team works the exceptions instead of the admin.",
               visual: (
                 <Showcase
-                  alt="A manual workflow of website lead, manual review, spreadsheet, and manual follow-up, redrawn as a connected system with lead intake, qualification, CRM, follow-up, and dashboard."
+                  alt="Left: a manual process scattered across an email inbox, a leads spreadsheet, and loose notes. Right: the same process as one connected system — lead capture, qualification, CRM record, follow-up, and dashboard."
                   fallback={<ConnectedOperationVisual />}
                   name={SHOWCASE.systemTransformation}
                 />
@@ -176,10 +175,9 @@ export default function V2Home() {
 
         <div className="v2-os-console" data-reveal>
           <Showcase
-            alt="Automation OS: five connected modules — Lead, AI Qualification, CRM, Follow-Up, and Dashboard — running as one interface."
+            alt="Automation OS: five connected modules — Lead, AI Qualification, CRM, Follow-Up, and Dashboard — above a pipeline funnel, lead sources, performance over time, and a live activity feed."
             fallback={<OsConsole />}
             name={SHOWCASE.automationOs}
-            ratio="3 / 2"
             sizes="(max-width: 900px) 100vw, 92vw"
           />
         </div>

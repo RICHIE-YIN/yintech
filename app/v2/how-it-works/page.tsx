@@ -35,7 +35,7 @@ export default function V2HowItWorks() {
       </V2Section>
 
       <ShowcaseBand
-        alt="A system map running from automation audit through system map, proposal, build, test, deploy, and manage."
+        alt="A seven-step delivery map — Automation Audit, System Map, Proposal, Build, Test, Deploy, Manage — with a continuous improvement loop returning from the last step to the second."
         caption="The delivery arc, end to end."
         eyebrow="System Map"
         name={SHOWCASE.howItWorksMap}

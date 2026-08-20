@@ -58,6 +58,17 @@ const CHAPTER_SHOWCASE: Record<string, ShowcaseName> = {
   websites: SHOWCASE.websites,
 };
 
+const CHAPTER_ALT: Record<string, string> = {
+  "sales-leads":
+    "A sales automation workspace: a lead qualification score, an email parsed into structured fields, a live chat captured as a contact, a scheduled follow-up sequence, and a table of scored leads.",
+  operations:
+    "An operations workspace: a quote with line items and totals, a five-stage approval workflow, quote volume and revenue charts, and an inventory table with stock levels.",
+  systems:
+    "A CRM workspace: a five-stage pipeline board of deals, a contact record with its activity history, and an executive dashboard of leads, opportunities, and pipeline value.",
+  websites:
+    "A website quote form flowing into a captured contact, a qualification score, a created customer record, and a scheduled follow-up sequence.",
+};
+
 const CHAPTER_LEDE: Record<string, string> = {
   "sales-leads":
     "Capture, qualification, follow-up, and reactivation running as one connected path from first enquiry to owned opportunity.",
@@ -117,7 +128,7 @@ export default function V2Services() {
       {serviceCategories.map((category, index) => (
         <div key={category.id}>
           <ShowcaseBand
-            alt={`${category.title}: a connected YinTech system shown as one workspace.`}
+            alt={CHAPTER_ALT[category.id] ?? `${category.title} shown as one connected workspace.`}
             eyebrow={`Chapter ${String(index + 1).padStart(2, "0")}`}
             name={CHAPTER_SHOWCASE[category.id]}
           />

@@ -55,10 +55,9 @@ export default function V2About() {
           </div>
           <div className="v2-split-visual" data-reveal>
             <Showcase
-              alt="A dark enterprise systems composition suggesting process clarity and automation structure."
+              alt="A layered system architecture: an experience layer of web, mobile, and integrations above process, data, automation, and infrastructure layers, all connected vertically."
               fallback={<ManualProcessVisual />}
               name={SHOWCASE.aboutPhilosophy}
-              ratio="3 / 2"
             />
           </div>
         </div>

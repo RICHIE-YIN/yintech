@@ -39,10 +39,15 @@ enterprise software aesthetic, clean panels, premium lighting, subtle depth.
 No cartoon style, no holograms, no cyberpunk, no neon, no purple, no robots,
 no readable gibberish text walls.
 
-Frames use `object-fit: contain` on a dark ground, so any aspect ratio sits
-cleanly without cropping the interface. The current assets are all 3:2
-(1536x1024) and the frames are set to match; a different ratio will letterbox
-against the same dark ground rather than crop.
+Frame shape is read from the file itself at build time (`lib/image-size.ts`
+parses the PNG/JPEG/WebP header), so a replacement of any dimensions fits its
+frame exactly — no letterboxing, no code change, no ratio to keep in sync.
+`object-fit: contain` remains as a safety net.
+
+One dev-only gotcha: Next caches optimized images under `.next/dev/cache/images`
+keyed by URL. Replacing a file while keeping its name can serve the previous
+version locally — delete that directory to force a re-encode. Production builds
+cache per deployment, so this does not affect the live site.
 
 ## Generation prompts
 
